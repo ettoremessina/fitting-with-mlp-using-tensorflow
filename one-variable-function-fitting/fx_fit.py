@@ -1,28 +1,46 @@
 import argparse
 import csv
-import tensorflow.keras.optimizers as tfo
+import time
+import numpy as np
+import tensorflow.keras.optimizers as tko
+import tensorflow.keras.activations as tka
+import tensorflow.keras.losses as tkl
 from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras.models import Model
 
+def build_model():
+    inputs = Input(shape=(1,))
+    hidden = inputs
+    for i in range(0, len(args.hidden_layers_layout)):
+        hidden = Dense(args.hidden_layers_layout[i], activation=build_activation_function(args.activation_functions[i]))(hidden)
+    outputs = Dense(1)(hidden)
+    model = Model(inputs=inputs, outputs=outputs)
+    return model
+
+def build_activation_function(af):
+    if af.lower() == 'none':
+        return None
+    exp_af = 'lambda _ : tka.' + af
+    return eval(exp_af)(None)
 
 def build_optimizer():
-    optimizer = None
-    if args.optimizer_name == 'SGD':
-        optimizer = tfo.SGD(lr=args.learning_rate, decay=args.decay, momentum=args.momentum, nesterov=args.nesterov)
-    elif args.optimizer_name == 'Adagrad':
-        optimizer = tfo.Adagrad(lr=args.learning_rate, epsilon=args.epsilon, decay=args.decay)
-    elif args.optimizer_name == 'RMSprop':
-        optimizer = tfo.RMSprop(lr=args.learning_rate, rho=args.rho, epsilon=args.epsilon, decay=args.decay)
-    elif args.optimizer_name == 'Adadelta':
-        optimizer = tfo.Adadelta(lr=args.learning_rate, rho=args.rho, epsilon=args.epsilon, decay=args.decay)
-    elif args.optimizer_name == 'Adam':
-        optimizer = tfo.Adam(lr=args.learning_rate, beta_1=args.beta_1, beta_2=args.beta_2, epsilon=args.epsilon, decay=args.decay, amsgrad=args.amsgrad)
-    elif args.optimizer_name == 'Adamax':
-        optimizer = tfo.Adamax(lr=args.learning_rate, beta_1=args.beta_1, beta_2=args.beta_2, epsilon=args.epsilon, decay=args.decay)
-    elif args.optimizer_name == 'Nadam':
-        optimizer = tfo.Nadam(lr=args.learning_rate, beta_1=args.beta_1, beta_2=args.beta_2, epsilon=args.epsilon, schedule_decay=args.decay)
+    opt_init = args.optimizer
+    bracket_pos = opt_init.find('(')
+    if bracket_pos == -1:
+        raise Exception('Wrong optimizer syntax')
+    opt_init_tail = opt_init[bracket_pos+1:].strip()
+    if opt_init_tail != ')':
+        opt_init_tail = ', ' + opt_init_tail
+    if len(args.learning_rate.strip()) > 0:
+        opt_init_tail = 'learning_rate=' + args.learning_rate + opt_init_tail
+    opt_init = opt_init[:bracket_pos+1] + opt_init_tail
+    exp_po = 'lambda _ : tko.' + opt_init
+    optimizer = eval(exp_po)(None)
     return optimizer
 
+def build_loss():
+    exp_loss = 'lambda _ : tkl.' + args.loss
+    return eval(exp_loss)(None)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='fx_fit.py fits a one-variable function in an interval using a configurable multilayer perceptron network')
@@ -54,104 +72,48 @@ if __name__ == "__main__":
                         help='batch size)')
 
     parser.add_argument('--learning_rate',
-                        type=float,
+                        type=str,
                         dest='learning_rate',
                         required=False,
-                        default=0.01,
+                        default='',
                         help='learning rate)')
 
     parser.add_argument('--hlayers',
                         type=int,
-                        dest='hidden_layers',
+                        nargs='+',
+                        dest='hidden_layers_layout',
                         required=False,
-                        default=1,
-                        help='number of hidden layers')
+                        default=[100],
+                        help='number of neurons for each hidden layers')
 
-    parser.add_argument('--hunits',
-                        type=int,
-                        dest='hidden_units',
-                        required=False,
-                        default=100,
-                        help='number of neuors in each hidden layers')
-
-    parser.add_argument('--hactivation',
+    parser.add_argument('--hactivations',
                         type=str,
-                        dest='hidden_activation',
+                        nargs='+',
+                        dest='activation_functions',
                         required=False,
-                        default='relu',
-                        help='activation function in hidden layers')
+                        default=['relu'],
+                        help='activation functions between layers')
 
     parser.add_argument('--optimizer',
                         type=str,
-                        dest='optimizer_name',
+                        dest='optimizer',
                         required=False,
-                        default='Adam',
-                        help='optimizer algorithm name')
-
-    parser.add_argument('--decay',
-                        type=float,
-                        dest='decay',
-                        required=False,
-                        default=0,
-                        help='decay')
-
-    parser.add_argument('--momentum',
-                        type=float,
-                        dest='momentum',
-                        required=False,
-                        default=0.0,
-                        help='momentum (used only by SGD optimizer)')
-
-    parser.add_argument('--nesterov',
-                        type=bool,
-                        dest='nesterov',
-                        required=False,
-                        default=False,
-                        help='nesterov (used only by SGD optimizer)')
-
-    parser.add_argument('--epsilon',
-                        type=float,
-                        dest='epsilon',
-                        required=False,
-                        default=None,
-                        help='epsilon (ignored by SGD optimizer)')
-
-    parser.add_argument('--rho',
-                        type=float,
-                        dest='rho',
-                        required=False,
-                        default=0.9,
-                        help='rho (used only by RMSprop and Adadelta optimizers)')
-
-    parser.add_argument('--beta_1',
-                        type=float,
-                        dest='beta_1',
-                        required=False,
-                        default=0.9,
-                        help='beta_1 (used only by Adam, Adamax and Nadam optimizers)')
-
-    parser.add_argument('--beta_2',
-                        type=float,
-                        dest='beta_2',
-                        required=False,
-                        default=0.999,
-                        help='beta_2 (used only by Adam, Adamax and Nadam optimizers)')
-
-    parser.add_argument('--amsgrad',
-                        type=bool,
-                        dest='amsgrad',
-                        required=False,
-                        default=False,
-                        help='amsgrad (used only by Adam optimizer)')
+                        default='Adam()',
+                        help='optimizer algorithm object')
 
     parser.add_argument('--loss',
                         type=str,
                         dest='loss',
                         required=False,
-                        default='mean_squared_error',
+                        default='MeanSquaredError()',
                         help='loss function name')
 
     args = parser.parse_args()
+
+    if len(args.hidden_layers_layout) != len(args.activation_functions):
+        raise Exception('Number of hidden layers and number of activation functions must be equals')
+
+    print("#### Started {} {} ####".format(__file__, args));
 
     x_train = []
     y_train = []
@@ -161,20 +123,17 @@ if __name__ == "__main__":
             x_train.append(float(row[0]))
             y_train.append(float(row[1]))
 
-    inputs = Input(shape=(1,))
-    hidden = inputs
-    for i in range(0, args.hidden_layers):
-        hidden = Dense(args.hidden_units, activation=args.hidden_activation)(hidden)
-    outputs = Dense(1)(hidden)
-    model = Model(inputs=inputs, outputs=outputs)
+    model = build_model()
 
-    the_optimizer = build_optimizer()
-    if the_optimizer is None:
-        raise Exception('Unknown optimizer {}'.format(args.optimizer_name))
-
-    model.compile(loss=args.loss, optimizer=the_optimizer)
+    optimizer = build_optimizer()
+    model.compile(loss=build_loss(), optimizer=optimizer)
     model.summary()
 
+    start_time = time.time()
     model.fit(x_train, y_train, epochs=args.epochs, batch_size=args.batch_size, verbose=1)
+    elapsed_time = time.time() - start_time
+    print ("Training time:", time.strftime("%H:%M:%S", time.gmtime(elapsed_time)))
 
     model.save(args.model_path)
+
+    print("#### Terminated {} ####".format(__file__));
