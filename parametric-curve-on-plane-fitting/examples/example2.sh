@@ -15,5 +15,5 @@ python ../pmc2t_fit.py --trainds datasets/example2_train.csv --modelout models/e
 python ../pmc2t_gen.py --dsout datasets/example2_test.csv  --xt "$FXT" --yt "$FYT" --rbegin 0 --rend 20.0 --rstep 0.0475
 python ../pmc2t_predict.py --model models/example2 --testds datasets/example2_test.csv --predicted predictions/example2_pred.csv
 
-python ../pmc2t_plot.py --trainds datasets/example2_train.csv --predicted predictions/example2_pred.csv
-#python ../pmc2t_plot.py --trainds datasets/example2_train.csv --predicted predictions/example2_pred.csv --savefig predictions/example2.png
+#python ../pmc2t_plot.py --trainds datasets/example2_train.csv --predicted predictions/example2_pred.csv
+python ../pmc2t_plot.py --trainds datasets/example2_train.csv --predicted predictions/example2_pred.csv --savefig predictions/example2.png

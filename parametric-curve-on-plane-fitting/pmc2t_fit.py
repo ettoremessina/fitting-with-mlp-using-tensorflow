@@ -3,7 +3,7 @@ import csv
 import tensorflow.keras.optimizers as tfo
 from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras.models import Model
-
+import numpy as np
 
 def build_optimizer():
     optimizer = None
@@ -167,7 +167,7 @@ if __name__ == "__main__":
     hidden = inputs
     for i in range(0, args.hidden_layers):
         hidden = Dense(args.hidden_units, activation=args.hidden_activation)(hidden)
-    outputs = [Dense(1)(hidden), Dense(1)(hidden)]
+    outputs = [Dense(1, name='x_output')(hidden), Dense(1, name='y_output')(hidden)]
     model = Model(inputs=inputs, outputs=outputs)
 
     the_optimizer = build_optimizer()
@@ -175,8 +175,8 @@ if __name__ == "__main__":
         raise Exception('Unknown optimizer {}'.format(args.optimizer_name))
 
     model.compile(loss=args.loss, optimizer=the_optimizer)
-    model.summary() 
+    model.summary()
 
-    model.fit(t_train, [x_train, y_train], epochs=args.epochs, batch_size=args.batch_size, verbose=1)
+    model.fit({'t_input': np.array(t_train)}, {'x_output': np.array(x_train), 'y_output': np.array(y_train)}, epochs=args.epochs, batch_size=args.batch_size, verbose=1)
 
     model.save(args.model_path)
