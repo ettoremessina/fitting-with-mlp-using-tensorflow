@@ -3,7 +3,7 @@ The goal of this repository is to share machine learning experimental projects w
 
 ## One variable function fitting
 This project implements the fitting of a continuous and limited real-valued function defined in a closed interval of the reals.
-The function fitting is implemented using a configurable multilayer perceptron neural network written using TensorFlow & Keras; it requires TensorFlow 2.0.0 beta 1 library.
+The function fitting is implemented using a configurable multilayer perceptron neural network written using TensorFlow & Keras; it requires TensorFlow 2.0.0 library.
 
 It contains four python programs:
  - **fx_gen.py** generates a synthetic dataset file invoking a one-variable real function on an real interval.
@@ -21,7 +21,7 @@ $ bash example1.sh
 
 ## Parametric curve on plane fitting
 This project implements the fitting of a continuous and limited real-valued parametric curve on plane where parameter belongs to a closed interval of the reals.
-The curve fitting is implemented using a configurable multilayer perceptron neural network written using TensorFlow & Keras; it requires TensorFlow 2.0.0 beta 1 library.
+The curve fitting is implemented using a configurable multilayer perceptron neural network written using TensorFlow & Keras; it requires TensorFlow 2.0.0 library.
 
 It contains four python programs:
  - **pc2t_gen.py** generates a synthetic dataset file invoking a couple of one-variable real functions (one for x coordinate and the other one for y coordinate) on an real interval.
