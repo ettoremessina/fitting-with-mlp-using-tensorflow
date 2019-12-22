@@ -8,11 +8,11 @@ It contains four python programs:
  - **fx_predict.py** makes a prediction on a test dataset of a one-variable function modeled with a pretrained multilayer perceptron neural network.
  - **fx_plot.py** shows two overlapped x/y scatter graphs: the blue one is the train dataset, the red one is the predicted one.
 
-### Example of usage of the four command in cascade
+### Predefined examples of usage of the four command in cascade
 In the subfolder **examples** there are nine bash scripts to fit nine different one-variable functions; each script executes the four programs in cascade in order to reach and show the goal.
 
 ```bash
-$ cd one-variable-function-fitting/examples
+$ cd examples
 $ sh example1.sh
 $ sh example2.sh
 $ sh example3.sh
@@ -27,12 +27,13 @@ $ sh example9.sh
 For details about the four commands and their command line options, please read below.
 
 ## **fx_gen.py** usage
-To get the usage run
+To get the usage please run
 ```bash
 $ python fx_gen.py --help
 ```
+
 and you get
-```bash
+```
 fx_gen.py generates a synthetic dataset file calling a one-variable real
 function in an interval
 
@@ -45,6 +46,7 @@ optional arguments:
   --rend RANGE_END      end range (default:+5.0))
   --rstep RANGE_STEP    step range (default: 0.01))
 ```
+
 where:
 **-h or --help** shows the above usage
 **--rbegin** and **--rend** are the limit of the closed interval of reals of independent variable x.
@@ -52,7 +54,10 @@ where:
 **--fx** is the function to use to compute the value of dependent variable; it is in lamba format.
 **--dsout** is the target dataset file name. The content of this file is csv and each line contains a couple of real numbers: the x and the f(x) where x is a value of the interval and f(x) is the value of dependent variable; the dataset is sorted by independent variable x. This option is mandatory.
 
-### Example of usage **fx_gen.py**
-python fx_gen.py --dsout mydataset.csv  --fx "np.exp(np.sin(x))" --rbegin -6.0 --rend 6.0 --rstep 0.05
+
+### Example of usage fx_gen.py
+```bash
+$ python fx_gen.py --dsout mydataset.csv  --fx "np.exp(np.sin(x))" --rbegin -6.0 --rend 6.0 --rstep 0.05
+```
 
 
