@@ -48,11 +48,11 @@ optional arguments:
 ```
 
 where:
-**-h or --help** shows the above usage
-**--rbegin** and **--rend** are the limit of the closed interval of reals of independent variable x.
-**--rstep** is the increment step of independent variable x into interval.
-**--fx** is the function to use to compute the value of dependent variable; it is in lamba format.
-**--dsout** is the target dataset file name. The content of this file is csv and each line contains a couple of real numbers: the x and the f(x) where x is a value of the interval and f(x) is the value of dependent variable; the dataset is sorted by independent variable x. This option is mandatory.
+* **-h or --help** shows the above usage
+* **--rbegin** and **--rend** are the limit of the closed interval of reals of independent variable x.
+* **--rstep** is the increment step of independent variable x into interval.
+* **--fx** is the function to use to compute the value of dependent variable; it is in lamba format.
+* **--dsout** is the target dataset file name. The content of this file is csv and each line contains a couple of real numbers: the x and the f(x) where x is a value of the interval and f(x) is the value of dependent variable; the dataset is sorted by independent variable x. This option is mandatory.
 
 
 ### Example of usage fx_gen.py
