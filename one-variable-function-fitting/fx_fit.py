@@ -49,7 +49,7 @@ if __name__ == "__main__":
                         type=str,
                         dest='train_dataset_filename',
                         required=True,
-                        help='train dataset file (csv format))')
+                        help='train dataset file (csv format)')
 
     parser.add_argument('--modelout',
                         type=str,
@@ -62,21 +62,21 @@ if __name__ == "__main__":
                         dest='epochs',
                         required=False,
                         default=500,
-                        help='number of epochs)')
+                        help='number of epochs')
 
     parser.add_argument('--batch_size',
                         type=int,
                         dest='batch_size',
                         required=False,
                         default=50,
-                        help='batch size)')
+                        help='batch size')
 
     parser.add_argument('--learning_rate',
                         type=str,
                         dest='learning_rate',
                         required=False,
                         default='',
-                        help='learning rate)')
+                        help='learning rate')
 
     parser.add_argument('--hlayers',
                         type=int,
