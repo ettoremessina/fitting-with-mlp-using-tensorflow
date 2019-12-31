@@ -119,9 +119,10 @@ Note: the learning rate can be passed either via **--learning_rate** command lin
   - RMSprop()
   - SGD()
 
-The default is Adam(). You can pass also named arguments between round brackets; please see [TensorFlow 2 optimizer reference](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers) for details about constructor named parameters and examples at the end of this guide.
+The default is Adam(). You can pass also named arguments between round brackets; please see [TensorFlow 2 optimizer reference](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers) for details about constructor named parameters and examples at the end of this section.
 Note: the learning rate can be passed either via **--learning_rate** command line argument or via **learning_rate** named parameter of constructor.
-- **--loss** is the constructor call of the loss function used by the training process. Available loss function construtors are:
+- **--loss** is the constructor call of the loss function used by the training process. You can pass also named arguments between round brackets; please see [TensorFlow 2 loss functions reference](https://www.tensorflow.org/api_docs/python/tf/keras/losses) for details about constructor named parameters and examples at the end of this section.\
+Available loss function construtors are:
   - BinaryCrossentropy()
   - CategoricalCrossentropy()
   - CategoricalHinge()
@@ -137,9 +138,8 @@ Note: the learning rate can be passed either via **--learning_rate** command lin
   - Poisson()
   - Reduction()
   - SparseCategoricalCrossentropy()
-  - SquaredHinge()
-
-The default is MeanSquaredError(). You can pass also named arguments between round brackets; please see [TensorFlow 2 loss functions reference](https://www.tensorflow.org/api_docs/python/tf/keras/losses) for details about constructor named parameters and examples at the end of this guide.
+  - SquaredHinge()\
+  The default is MeanSquaredError(). 
 
 ### Examples of fx_fix.py usage
 ```bash
@@ -152,4 +152,14 @@ $ python fx_fit.py --trainds mytrainds.csv --modelout mymodel \
   --epochs 100 --batch_size 50 \
   --optimizer 'Adam(epsilon=1e-07)' --learning_rate 0.05 \
   --loss 'MeanSquaredError()'
+
+$ python fx_fit.py --trainds mytrainds.csv --modelout mymodel \
+--hlayers 200 300 200 --hactivation sigmoid sigmoid sigmoid \
+  --epochs 1000 --batch_size 200 \
+  --optimizer 'Adamax()' --learning_rate 0.02
+
+$ python fx_fit.py --trainds mytrainds.csv --modelout mymodel \
+--hlayers 200 300 200 --hactivation sigmoid sigmoid sigmoid \
+  --epochs 1000 --batch_size 200 \
+  --optimizer 'Adamax(learning_rate=0.02)'
 ```
