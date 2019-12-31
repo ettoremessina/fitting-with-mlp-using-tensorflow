@@ -105,11 +105,12 @@ where:
 - **--modelout** is a non-existing path where the program saves the trained model (in tf native format). This argument is mandatory.
 - **--epochs** is the number of epochs of the training process. The default is **500**
 - **--batch_size** is the size of the batch used during training. The default is **50**
-- **--learning_rate** is the learning rate. The default depends by the chosen optimizer (see below) in according with [TensorFlow 2 optimizer reference](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers).
-Note: the learning rate can be passed either via **--learning_rate** command line argument or via **learning_rate** named parameter of constructor (see below).
+- **--learning_rate** is the learning rate. The default depends by the chosen optimizer (see below) in according with [TensorFlow 2 optimizer reference](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers).\
+**Note:** the learning rate can be passed either via **--learning_rate** command line argument or via **learning_rate** named parameter of constructor (see below), but never in both way.
 - **--hlayers** is a sequence of integers: the size of the sequence is the number of hidden layers, each value of the sequence is the number of neurons in the correspondent layer. The default is **100** (one hidden layer only containing 100 neurons),
 - **--hactivations** is a sequence of activation functions: the size of the sequence must be equal to the number of layers and each item of the sequence is the activation function to apply to the output of the neurons of the correspondent layer. The default is **relu** (applied to one only hidden layer; if number of layers are > 1, this parameter becomes mandatory).
-- **--optimizer** is the constructor call of the algorithm used by the training process. Available algorithm constructors are:
+- **--optimizer** is the constructor call of the algorithm used by the training process. You can pass also named arguments between round brackets; please see [TensorFlow 2 optimizer reference](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers) for details about constructor named parameters and examples at the end of this section.\
+  Available algorithm constructors are:
   - Adadelta()
   - Adagrad()
   - Adam()
@@ -117,12 +118,10 @@ Note: the learning rate can be passed either via **--learning_rate** command lin
   - Ftrl()
   - Nadam()
   - RMSprop()
-  - SGD()
-
-The default is Adam(). You can pass also named arguments between round brackets; please see [TensorFlow 2 optimizer reference](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers) for details about constructor named parameters and examples at the end of this section.
-Note: the learning rate can be passed either via **--learning_rate** command line argument or via **learning_rate** named parameter of constructor.
+  - SGD()\
+  The default is Adam().
 - **--loss** is the constructor call of the loss function used by the training process. You can pass also named arguments between round brackets; please see [TensorFlow 2 loss functions reference](https://www.tensorflow.org/api_docs/python/tf/keras/losses) for details about constructor named parameters and examples at the end of this section.\
-Available loss function construtors are:
+  Available loss function construtors are:
   - BinaryCrossentropy()
   - CategoricalCrossentropy()
   - CategoricalHinge()
@@ -154,12 +153,12 @@ $ python fx_fit.py --trainds mytrainds.csv --modelout mymodel \
   --loss 'MeanSquaredError()'
 
 $ python fx_fit.py --trainds mytrainds.csv --modelout mymodel \
---hlayers 200 300 200 --hactivation sigmoid sigmoid sigmoid \
+  --hlayers 200 300 200 --hactivation sigmoid sigmoid sigmoid \
   --epochs 1000 --batch_size 200 \
   --optimizer 'Adamax()' --learning_rate 0.02
 
 $ python fx_fit.py --trainds mytrainds.csv --modelout mymodel \
---hlayers 200 300 200 --hactivation sigmoid sigmoid sigmoid \
+  --hlayers 200 300 200 --hactivation sigmoid sigmoid sigmoid \
   --epochs 1000 --batch_size 200 \
   --optimizer 'Adamax(learning_rate=0.02)'
 ```
