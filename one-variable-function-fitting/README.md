@@ -69,7 +69,9 @@ $ python fx_fit.py --help
 
 and you get
 ```
-usage: fx_fit.py [-h] --trainds TRAIN_DATASET_FILENAME --modelout MODEL_PATH
+usage: fx_fit.py [-h] 
+                 --trainds TRAIN_DATASET_FILENAME
+                 --modelout MODEL_PATH
                  [--epochs EPOCHS] [--batch_size BATCH_SIZE]
                  [--learning_rate LEARNING_RATE]
                  [--hlayers HIDDEN_LAYERS_LAYOUT [HIDDEN_LAYERS_LAYOUT ...]]
@@ -201,8 +203,10 @@ $ python fx_plot.py --help
 
 and you get
 ```
-usage: fx_plot.py [-h] --trainds TRAIN_DATASET_FILENAME --predicted
-                  PREDICTED_DATA_FILENAME [--savefig SAVE_FIGURE_FILENAME]
+usage: fx_plot.py [-h]
+                  --trainds TRAIN_DATASET_FILENAME
+                  --predicted PREDICTED_DATA_FILENAME 
+                  [--savefig SAVE_FIGURE_FILENAME]
 
 fx_plot.py shows two overlapped x/y scatter graphs: the blue one is the train
 dataset, the red one is the predicted one
@@ -225,5 +229,6 @@ $ python fx_plot.py --trainds mytrainds.csv --predicted myprediction.csv
 
 $ python fx_plot.py --trainds mytrainds.csv --predicted myprediction.csv --savefig mychart.png
 ```
+
 
 
