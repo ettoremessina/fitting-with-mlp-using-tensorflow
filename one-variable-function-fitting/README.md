@@ -81,22 +81,15 @@ multilayer perceptron network
 
 optional arguments:
   -h, --help            show this help message and exit
-  --trainds TRAIN_DATASET_FILENAME
-                        train dataset file (csv format)
-  --modelout MODEL_PATH
-                        output model path
-  --epochs EPOCHS       number of epochs
-  --batch_size BATCH_SIZE
-                        batch size
-  --learning_rate LEARNING_RATE
-                        learning rate)
-  --hlayers HIDDEN_LAYERS_LAYOUT [HIDDEN_LAYERS_LAYOUT ...]
-                        number of neurons for each hidden layers
-  --hactivations ACTIVATION_FUNCTIONS [ACTIVATION_FUNCTIONS ...]
-                        activation functions between layers
-  --optimizer OPTIMIZER
-                        optimizer algorithm object
-  --loss LOSS           loss function name
+  --trainds TRAIN_DATASET_FILENAME  train dataset file (csv format)
+  --modelout MODEL_PATH             output model path
+  --epochs EPOCHS                   number of epochs
+  --batch_size BATCH_SIZE           batch size
+  --learning_rate LEARNING_RATE     learning rate
+  --hlayers HIDDEN_LAYERS_LAYOUT [HIDDEN_LAYERS_LAYOUT ...] number of neurons for each hidden layers
+  --hactivations ACTIVATION_FUNCTIONS [ACTIVATION_FUNCTIONS ...] activation functions between layers
+  --optimizer OPTIMIZER             optimizer algorithm object
+  --loss LOSS                       loss function name
 ```
 
 where:
