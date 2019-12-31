@@ -10,7 +10,7 @@ if __name__ == "__main__":
                         type=str,
                         dest='model_path',
                         required=True,
-                        help='model path)')
+                        help='model path')
 
     parser.add_argument('--testds',
                         type=str,
