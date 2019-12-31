@@ -102,13 +102,13 @@ optional arguments:
 where:
 - **-h or --help** shows the above usage
 - **--trainds** is the input training dataset in csv format: a couple of real number for each line respectively for x and y (no header in first line). In case you haven't a such real world true dataset, for your experiments you can generate it synthetically using **fx_gen.py**. This argument is mandatory.
-- **--modelout** is a non-existing path where the program saves the trained model (in tf native format).
-- **--epochs** is the number of epochs of the training process.
-- **--batch_size** is the size of the batch used during training.
-- **--learning_rate** is the learning rate; its default depends by optimizer in according with [TensorFlow 2 optimizer reference](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers).
+- **--modelout** is a non-existing path where the program saves the trained model (in tf native format). This argument is mandatory.
+- **--epochs** is the number of epochs of the training process. The default is **500**
+- **--batch_size** is the size of the batch used during training. The default is **50**
+- **--learning_rate** is the learning rate. The default depends by the chosen optimizer (see below) in according with [TensorFlow 2 optimizer reference](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers){:target="_blank"}.
 Note: the learning rate can be passed either via **--learning_rate** command line argument or via **learning_rate** named parameter of constructor (see below).
-- **--hlayers** is an array of integers: the size of the array is the number of hidden layers, each value of the array is the number of neurons in the correspondent layer. The default is **100** (one hidden layer containing 100 neurons),
-- **--hactivations** is an array of activation functions: the size of the array must be equal to the number of layers and each item of the array is the activation function to apply to the output of neurons of the correspondent layer. The default is **relu** (applied to one only hidden layer).
+- **--hlayers** is a sequence of integers: the size of the sequence is the number of hidden layers, each value of the sequence is the number of neurons in the correspondent layer. The default is **100** (one hidden layer only containing 100 neurons),
+- **--hactivations** is a sequence of activation functions: the size of the sequence must be equal to the number of layers and each item of the sequence is the activation function to apply to the output of the neurons of the correspondent layer. The default is **relu** (applied to one only hidden layer; if number of layers are > 1, this parameter becomes mandatory).
 - **--optimizer** is the constructor call of the algorithm used by the training process. Available algorithm constructors are:
   - Adadelta()
   - Adagrad()
@@ -117,8 +117,8 @@ Note: the learning rate can be passed either via **--learning_rate** command lin
   - Ftrl()
   - Nadam()
   - RMSprop()
-  - SGD()
-The default is Adam(). You can pass also named arguments between round brackets; please see [TensorFlow 2 optimizer reference](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers) for details about constructor parameters and examples at the end of this guide.
+  - SGD()\
+The default is Adam(). You can pass also named arguments between round brackets; please see [TensorFlow 2 optimizer reference](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers){:target="_blank"} for details about constructor named parameters and examples at the end of this guide.
 Note: the learning rate can be passed either via **--learning_rate** command line argument or via **learning_rate** named parameter of constructor.
 - **--loss** is the constructor call of the loss function used by the training process. Available loss function construtors are:
   - BinaryCrossentropy()
@@ -136,17 +136,15 @@ Note: the learning rate can be passed either via **--learning_rate** command lin
   - Poisson()
   - Reduction()
   - SparseCategoricalCrossentropy()
-  - SquaredHinge()
-The default is MeanSquaredError(). You can pass also named arguments between round brackets; please see [TensorFlow 2 loss functions reference](https://www.tensorflow.org/api_docs/python/tf/keras/losses) for details about constructor parameters and examples at the end of this guide.
+  - SquaredHinge()\
+The default is MeanSquaredError(). You can pass also named arguments between round brackets; please see [TensorFlow 2 loss functions reference](https://www.tensorflow.org/api_docs/python/tf/keras/losses){:target="_blank"} for details about constructor named parameters and examples at the end of this guide.
 
 ### Examples of fx_fix.py usage
 ```bash
 $ python fx_fit.py --trainds mytrainds.csv --modelout mymodel \
   --hlayers 200 200 --hactivation relu relu \
   --epochs 500 --batch_size 100
-```
 
-```bash
 $ python fx_fit.py --trainds mytrainds.csv --modelout mymodel \
   --hlayers 120 160 --hactivations tanh relu \
   --epochs 100 --batch_size 50 \
