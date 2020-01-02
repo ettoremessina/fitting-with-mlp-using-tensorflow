@@ -22,21 +22,21 @@ if __name__ == "__main__":
                         dest='range_begin',
                         required=False,
                         default=-5.0,
-                        help='begin range (default:-5.0))')
+                        help='begin range (default:-5.0)')
 
     parser.add_argument('--rend',
                         type=float,
                         dest='range_end',
                         required=False,
                         default=+5.0,
-                        help='end range (default:+5.0))')
+                        help='end range (default:+5.0)')
 
     parser.add_argument('--rstep',
                         type=float,
                         dest='range_step',
                         required=False,
                         default=0.01,
-                        help='step range (default: 0.01))')
+                        help='step range (default: 0.01)')
 
     args = parser.parse_args()
 

@@ -41,9 +41,9 @@ optional arguments:
   -h, --help                  show this help message and exit
   --dsout DS_OUTPUT_FILENAME  dataset output file (csv format)
   --fx FUNC_X_BODY            f(x) body (body lamba format)
-  --rbegin RANGE_BEGIN        begin range (default:-5.0))
-  --rend RANGE_END            end range (default:+5.0))
-  --rstep RANGE_STEP          step range (default: 0.01))
+  --rbegin RANGE_BEGIN        begin range (default:-5.0)
+  --rend RANGE_END            end range (default:+5.0)
+  --rstep RANGE_STEP          step range (default: 0.01)
 ```
 
 where:
@@ -69,7 +69,7 @@ $ python fx_fit.py --help
 
 and you get
 ```
-usage: fx_fit.py [-h] 
+usage: fx_fit.py [-h]
                  --trainds TRAIN_DATASET_FILENAME
                  --modelout MODEL_PATH
                  [--epochs EPOCHS] [--batch_size BATCH_SIZE]
@@ -133,7 +133,7 @@ where:
   - Reduction()
   - SparseCategoricalCrossentropy()
   - SquaredHinge()\
-  The default is **MeanSquaredError()**. 
+  The default is **MeanSquaredError()**.
 
 ### Examples of fx_fix.py usage
 ```bash
@@ -167,8 +167,8 @@ $ python fx_predict.py --help
 
 and you get
 ```
-usage: fx_predict.py [-h] 
-                     --model MODEL_PATH 
+usage: fx_predict.py [-h]
+                     --model MODEL_PATH
                      --testds TEST_DATASET_FILENAME
                      --predictedout PREDICTED_DATA_FILENAME
 
@@ -205,7 +205,7 @@ and you get
 ```
 usage: fx_plot.py [-h]
                   --trainds TRAIN_DATASET_FILENAME
-                  --predicted PREDICTED_DATA_FILENAME 
+                  --predicted PREDICTED_DATA_FILENAME
                   [--savefig SAVE_FIGURE_FILENAME]
 
 fx_plot.py shows two overlapped x/y scatter graphs: the blue one is the train
@@ -229,5 +229,3 @@ $ python fx_plot.py --trainds mytrainds.csv --predicted myprediction.csv
 
 $ python fx_plot.py --trainds mytrainds.csv --predicted myprediction.csv --savefig mychart.png
 ```
-
-
