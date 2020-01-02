@@ -1,23 +1,9 @@
-# TensorFlow Experiments
-The goal of this repository is to share machine learning experimental projects written in Python 3 using TensorFlow.
+# Fitting with MLP using-TensorFlow
+The goal of this repository is to share sources of programs that fit some kinds of curves by high configurable MLP (Multi-Layer Perceptron) written in Python 3 using TensorFlow 2 with Keras technology.
 
-## One variable function fitting
+## [One variable function fitting](./one-variable-function-fitting)
 This project implements the fitting of a continuous and limited real-valued function defined in a closed interval of the reals.
-The function fitting is implemented using a configurable multilayer perceptron neural network written using TensorFlow & Keras; it requires TensorFlow 2.0.0 library.
-
-It contains four python programs:
- - **fx_gen.py** generates a synthetic dataset file invoking a one-variable real function on an real interval.
- - **fx_fit.py** fits a one-variable function in an interval using a configurable multilayer perceptron neural network.
- - **fx_predict.py** makes a prediction on a test dataset of a one-variable function modeled with a pretrained multilayer perceptron neural network.
- - **fx_plot.py** shows two overlapped x/y scatter graphs: the blue one is the train dataset, the red one is the predicted one.
-
-### An example of usage
-In the subfolder **examples** there are nine bash scripts to fit nine different one-variable functions; each script executes the four programs in cascade in order to reach and show the goal.
-
-```bash
-$ cd one-variable-function-fitting/examples
-$ bash example1.sh
-```
+See specific [README.md](./one-variable-function-fitting/README.md) for details.
 
 ## Parametric curve on plane fitting
 This project implements the fitting of a continuous and limited real-valued parametric curve on plane where parameter belongs to a closed interval of the reals.
