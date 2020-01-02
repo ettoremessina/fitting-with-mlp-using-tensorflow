@@ -105,18 +105,18 @@ where:
 - **--hlayers** is a sequence of integers: the size of the sequence is the number of hidden layers, each value of the sequence is the number of neurons in the correspondent layer. The default is **100** (one only hidden layer with 100 neurons),
 - **--hactivations** is a sequence of activation functions: the size of the sequence must be equal to the number of layers and each item of the sequence is the activation function to apply to the output of the neurons of the correspondent layer. Please see [TensorFlow 2 activation function reference](https://www.tensorflow.org/api_docs/python/tf/keras/activations) for details.\
   Available activation functions are:
-- elu
-- exponential
-- hard_sigmoid
-- linear
-- relu
-- selu
-- sigmoid
-- softmax
-- softplus
-- softsign
-- tanh\
-The default is **relu** (applied to one only hidden layer; if number of layers are > 1, this argument becomes mandatory).
+  - elu
+  - exponential
+  - hard_sigmoid
+  - linear
+  - relu
+  - selu
+  - sigmoid
+  - softmax
+  - softplus
+  - softsign
+  - tanh\
+  The default is **relu** (applied to one only hidden layer; if number of layers are > 1, this argument becomes mandatory).
 - **--optimizer** is the constructor call of the algorithm used by the training process. You can pass also named arguments between round brackets; please see [TensorFlow 2 optimizer reference](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers) for details about constructor named parameters and examples at the end of this section.\
   Available algorithm constructors are:
   - Adadelta()

@@ -1,4 +1,4 @@
-# Fitting with MLP using-TensorFlow
+# Fitting with MLP using TensorFlow
 The goal of this repository is to share programs that fit some kinds of curves by high configurable MLP (Multi-Layer Perceptron) written in Python 3 using TensorFlow 2 with Keras.
 
 ## One variable function fitting
