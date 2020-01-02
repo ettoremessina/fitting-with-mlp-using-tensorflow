@@ -1,6 +1,6 @@
 # One variable function fitting
 This project implements the fitting of a continuous and limited real-valued function defined in a closed interval of the reals.
-The function fitting is implemented using a configurable multilayer perceptron neural network written using TensorFlow & Keras; it requires TensorFlow 2.0.0 library.
+The function fitting is implemented using a configurable multilayer perceptron neural network written using TensorFlow 2.0.0 & Keras; it requires also NumPy and MatPlotLib libraries.
 
 It contains four python programs:
  - **fx_gen.py** generates a synthetic dataset file invoking a one-variable real function on an real interval.
@@ -12,7 +12,7 @@ It contains four python programs:
 In the subfolder **examples** there are nine bash scripts to fit nine different one-variable functions; each script executes the four programs in cascade in order to reach and show the goal.
 
 ```bash
-$ cd examples
+$ cd one-variable-function-fitting/examples
 $ sh example1.sh
 $ sh example2.sh
 $ sh example3.sh
@@ -51,7 +51,7 @@ where:
 - **--rbegin** and **--rend** are the limit of the closed interval of reals of independent variable x.
 - **--rstep** is the increment step of independent variable x into interval.
 - **--fx** is the function to use to compute the value of dependent variable; it is in lamba body format.
-- **--dsout** is the target dataset file name. The content of this file is csv and each line contains a couple of real numbers: the x and the f(x) where x is a value of the interval and f(x) is the value of dependent variable; the dataset is sorted by independent variable x. This option is mandatory.
+- **--dsout** is the target dataset file name. The content of this file is csv and each line contains a couple of real numbers: the x and the f(x) where x is a value of the interval and f(x) is the value of dependent variable; the dataset is sorted by independent variable x. This argument is mandatory.
 
 ### Examples of fx_gen.py usage
 ```bash
@@ -82,7 +82,7 @@ fx_fit.py fits a one-variable function in an interval using a configurable
 multilayer perceptron network
 
 optional arguments:
-  -h, --help            show this help message and exit
+  -h, --help                        show this help message and exit
   --trainds TRAIN_DATASET_FILENAME  train dataset file (csv format)
   --modelout MODEL_PATH             output model path
   --epochs EPOCHS                   number of epochs
@@ -102,8 +102,21 @@ where:
 - **--batch_size** is the size of the batch used during training. The default is **50**
 - **--learning_rate** is the learning rate. The default depends by the chosen optimizer (see below) in according with [TensorFlow 2 optimizer reference](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers).\
 **Note:** the learning rate can be passed either via **--learning_rate** command line argument or via **learning_rate** named parameter of constructor (see below), but never in both way.
-- **--hlayers** is a sequence of integers: the size of the sequence is the number of hidden layers, each value of the sequence is the number of neurons in the correspondent layer. The default is **100** (one hidden layer only containing 100 neurons),
-- **--hactivations** is a sequence of activation functions: the size of the sequence must be equal to the number of layers and each item of the sequence is the activation function to apply to the output of the neurons of the correspondent layer. The default is **relu** (applied to one only hidden layer; if number of layers are > 1, this parameter becomes mandatory).
+- **--hlayers** is a sequence of integers: the size of the sequence is the number of hidden layers, each value of the sequence is the number of neurons in the correspondent layer. The default is **100** (one only hidden layer with 100 neurons),
+- **--hactivations** is a sequence of activation functions: the size of the sequence must be equal to the number of layers and each item of the sequence is the activation function to apply to the output of the neurons of the correspondent layer. Please see [TensorFlow 2 activation function reference](https://www.tensorflow.org/api_docs/python/tf/keras/activations) for details.\
+  Available activation functions are:
+- elu
+- exponential
+- hard_sigmoid
+- linear
+- relu
+- selu
+- sigmoid
+- softmax
+- softplus
+- softsign
+- tanh\
+The default is **relu** (applied to one only hidden layer; if number of layers are > 1, this argument becomes mandatory).
 - **--optimizer** is the constructor call of the algorithm used by the training process. You can pass also named arguments between round brackets; please see [TensorFlow 2 optimizer reference](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers) for details about constructor named parameters and examples at the end of this section.\
   Available algorithm constructors are:
   - Adadelta()
@@ -137,24 +150,42 @@ where:
 
 ### Examples of fx_fix.py usage
 ```bash
-$ python fx_fit.py --trainds mytrainds.csv --modelout mymodel \
-  --hlayers 200 200 --hactivation relu relu \
-  --epochs 500 --batch_size 100
+$ python fx_fit.py \
+  --trainds mytrainds.csv \
+  --modelout mymodel \
+  --hlayers 200 200
+  --hactivation relu relu \
+  --epochs 500 \
+  --batch_size 100
 
-$ python fx_fit.py --trainds mytrainds.csv --modelout mymodel \
-  --hlayers 120 160 --hactivations tanh relu \
-  --epochs 100 --batch_size 50 \
-  --optimizer 'Adam(epsilon=1e-07)' --learning_rate 0.05 \
+$ python fx_fit.py \
+  --trainds mytrainds.csv \
+  --modelout mymodel \
+  --hlayers 120 160 \
+  --hactivations tanh relu \
+  --epochs 100 \
+  --batch_size 50 \
+  --optimizer 'Adam(epsilon=1e-07)' \
+  --learning_rate 0.05 \
   --loss 'MeanSquaredError()'
 
-$ python fx_fit.py --trainds mytrainds.csv --modelout mymodel \
-  --hlayers 200 300 200 --hactivation sigmoid sigmoid sigmoid \
-  --epochs 1000 --batch_size 200 \
-  --optimizer 'Adamax()' --learning_rate 0.02
+$ python fx_fit.py \
+  --trainds mytrainds.csv \
+  --modelout mymodel \
+  --hlayers 200 300 200 \
+  --hactivation sigmoid sigmoid sigmoid \
+  --epochs 1000 \
+  --batch_size 200 \
+  --optimizer 'Adamax()' \
+  --learning_rate 0.02
 
-$ python fx_fit.py --trainds mytrainds.csv --modelout mymodel \
-  --hlayers 200 300 200 --hactivation sigmoid sigmoid sigmoid \
-  --epochs 1000 --batch_size 200 \
+$ python fx_fit.py \
+  --trainds mytrainds.csv \
+  --modelout mymodel \
+  --hlayers 200 300 200 \
+  --hactivation sigmoid sigmoid sigmoid \
+  --epochs 1000 \
+  --batch_size 200 \
   --optimizer 'Adamax(learning_rate=0.02)'
 ```
 
@@ -186,7 +217,7 @@ where:
 - **-h or --help** shows the above usage
 - **--model** is the path of a model generated by **fx_fit.py** (see **--modelout** command line parameter of **fx_fit.py**). This argument is mandatory.
 - **--testds** is the input test dataset in csv format: a couple of real number for each line respectively for x and y (no header in first line). In case you haven't a such real world true dataset, for your experiments you can generate it synthetically using **fx_gen.py**. This argument is mandatory.
-- **--predictedout** is the file name of predicted values. The content of this file is csv and each line contains a couple of real numbers: the x value come from test dataset and the predicted f(x); This option is mandatory.
+- **--predictedout** is the file name of predicted values. The content of this file is csv and each line contains a couple of real numbers: the x value come from test dataset and the predicted f(x); This argument is mandatory.
 
 ### Example of fx_predict.py usage
 ```bash
@@ -221,7 +252,7 @@ where:
 - **-h or --help** shows the above usage
 - **--trainds** is the input training dataset in csv format passed before to **fx_fit.py** (see **--trainds** command line parameter of **fx_fit.py**). This argument is mandatory.
 - **--predicted** is the file name of predicted values generated by **fx_predict.py** (see **--predictedout** command line parameter of **fx_predict.py**). This argument is mandatory.
-- **--savefig** if this parameter is missing, the chart is shown on screen, otherwise this parameter is the png output filename where **fx_plot.py** saves the chart.
+- **--savefig** if this argument is missing, the chart is shown on screen, otherwise this argument is the png output filename where **fx_plot.py** saves the chart.
 
 ### Example of fx_plot.py usage
 ```bash
