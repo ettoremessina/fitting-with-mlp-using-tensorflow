@@ -14,5 +14,5 @@ python ../fx_fit.py --trainds datasets/example1_train.csv --modelout models/exam
 python ../fx_gen.py --dsout datasets/example1_test.csv  --fx "$FX" --rbegin $RB --rend $RE --rstep 0.0475
 python ../fx_predict.py --model models/example1 --testds datasets/example1_test.csv --predicted predictions/example1_pred.csv
 
-python ../fx_plot.py --trainds datasets/example1_train.csv --predicted predictions/example1_pred.csv
-#python ../fx_plot.py --trainds datasets/example1_train.csv --predicted predictions/example1_pred.csv --savefig predictions/example1.png
+python ../fx_plot.py --ds datasets/example1_test.csv --predicted predictions/example1_pred.csv
+#python ../fx_plot.py --ds datasets/example1_test.csv --predicted predictions/example1_pred.csv --savefig predictions/example1.png
