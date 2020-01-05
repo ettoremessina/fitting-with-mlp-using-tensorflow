@@ -238,8 +238,8 @@ usage: fx_plot.py [-h]
                   --predicted PREDICTED_DATA_FILENAME
                   [--savefig SAVE_FIGURE_FILENAME]
 
-fx_plot.py shows two overlapped x/y scatter graphs: the blue one is the
-dataset, the red one is the prediction
+fx_plot.py shows two overlapped x/y scatter graphs: the blue one is the dataset,
+the red one is the prediction
 
 optional arguments:
   -h, --help            show this help message and exit
