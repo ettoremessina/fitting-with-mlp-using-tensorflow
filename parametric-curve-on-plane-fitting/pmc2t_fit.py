@@ -25,7 +25,7 @@ def build_optimizer():
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='pmc2t_fit.py fits a one-variable function in an interval using a configurable multilayer perceptron network')
+    parser = argparse.ArgumentParser(description='pmc2t_fit.py fits a parametric curve on plan dataset using a configurable multilayer perceptron network')
 
     parser.add_argument('--trainds',
                         type=str,

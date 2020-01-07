@@ -3,7 +3,7 @@ import numpy as np
 import csv
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='pmf2t_gen_ds.py generates a synthetic dataset file calling a one-variable real function in an interval')
+    parser = argparse.ArgumentParser(description='pmc2t_gen.py generates a synthetic dataset file of a parametric curve on plan calling a couple of one-variable real functions in an interval')
 
     parser.add_argument('--dsout',
                         type=str,
@@ -15,13 +15,13 @@ if __name__ == "__main__":
                         type=str,
                         dest='funcx_t_body',
                         required=True,
-                        help='x=f(t) body (lamba format)')
+                        help='x=fx(t) body (lamba format)')
 
     parser.add_argument('--yt',
                         type=str,
                         dest='funcy_t_body',
                         required=True,
-                        help='y=f(t) body (lamba format)')
+                        help='y=fy(t) body (lamba format)')
 
 
     parser.add_argument('--rbegin',
@@ -29,21 +29,21 @@ if __name__ == "__main__":
                         dest='range_begin',
                         required=False,
                         default=-5.0,
-                        help='begin range (default:-5.0))')
+                        help='begin range (default:-5.0)')
 
     parser.add_argument('--rend',
                         type=float,
                         dest='range_end',
                         required=False,
                         default=+5.0,
-                        help='end range (default:+5.0))')
+                        help='end range (default:+5.0)')
 
     parser.add_argument('--rstep',
                         type=float,
                         dest='range_step',
                         required=False,
                         default=0.01,
-                        help='step range (default: 0.01))')
+                        help='step range (default: 0.01)')
 
     args = parser.parse_args()
 
