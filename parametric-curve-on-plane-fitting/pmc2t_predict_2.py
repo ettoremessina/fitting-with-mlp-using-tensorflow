@@ -1,5 +1,7 @@
 import argparse
 import csv
+import os
+import time
 import tensorflow.keras.models as tfm
 
 if __name__ == "__main__":
@@ -9,7 +11,7 @@ if __name__ == "__main__":
                         type=str,
                         dest='model_path',
                         required=True,
-                        help='model path)')
+                        help='model path')
 
     parser.add_argument('--testds',
                         type=str,
@@ -25,6 +27,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    print("#### Started {} {} ####".format(__file__, args));
+
     t_test = []
     x_test = []
     y_test = []
@@ -35,12 +39,19 @@ if __name__ == "__main__":
             x_test.append(float(row[1]))
             y_test.append(float(row[2]))
 
-    model = tfm.load_model(args.model_path)
+    model_x = tfm.load_model(os.path.join(args.model_path, 'x'))
+    model_y = tfm.load_model(os.path.join(args.model_path, 'y'))
 
-    x_pred, y_pred = model.predict(t_test, batch_size=1)
+    start_time = time.time()
+    x_pred = model_x.predict(t_test, batch_size=1)
+    y_pred = model_y.predict(t_test, batch_size=1)
+    elapsed_time = time.time() - start_time
+    print ("Test time:", time.strftime("%H:%M:%S", time.gmtime(elapsed_time)))
 
     csv_output_file = open(args.predicted_data_filename, 'w')
     with csv_output_file:
         writer = csv.writer(csv_output_file, delimiter=',')
         for i in range(0, len(x_test)):
             writer.writerow([t_test[i], x_pred[i][0], y_pred[i][0]])
+
+    print("#### Terminated {} ####".format(__file__));

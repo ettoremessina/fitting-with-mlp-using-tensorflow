@@ -3,7 +3,7 @@ import numpy as np
 import csv
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='pmc2t_gen.py generates a synthetic dataset file of a parametric curve on plan calling a couple of one-variable real functions in an interval')
+    parser = argparse.ArgumentParser(description='pmc2t_gen.py generates a synthetic dataset file that contains the points of a parametric curve on plan calling a couple of one-variable real functions in an interval')
 
     parser.add_argument('--dsout',
                         type=str,
@@ -47,6 +47,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    print("#### Started {} {} ####".format(__file__, args));
+
     t_values = np.arange(args.range_begin, args.range_end, args.range_step, dtype=float)
     funcx_t = eval('lambda t: ' + args.funcx_t_body)
     funcy_t = eval('lambda t: ' + args.funcy_t_body)
@@ -55,3 +57,5 @@ if __name__ == "__main__":
         writer = csv.writer(csv_ds_output_file, delimiter=',')
         for i in range(0, t_values.size):
             writer.writerow([t_values[i], funcx_t(t_values[i]), funcy_t(t_values[i])])
+
+    print("#### Terminated {} ####".format(__file__));

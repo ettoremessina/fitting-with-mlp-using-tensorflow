@@ -3,20 +3,18 @@ import csv
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='pmc2t_plot.py shows two overlapped x/y scatter graphs: the blue one is the train dataset, the red one is the predicted one')
+    parser = argparse.ArgumentParser(description='pmc2t_plot.py shows two overlapped x/y scatter graphs: the blue one is the dataset, the red one is the predicted one')
 
-    parser.add_argument('--trainds',
+    parser.add_argument('--ds',
                         type=str,
-                        dest='train_dataset_filename',
+                        dest='dataset_filename',
                         required=True,
-                        help='train dataset file (csv format)')
+                        help='dataset file (csv format)')
 
-#this param must be mandatory
     parser.add_argument('--predicted',
                         type=str,
                         dest='predicted_data_filename',
-                        required=False,
-                        default='',
+                        required=True,
                         help='predicted data file (csv format)')
 
     parser.add_argument('--savefig',
@@ -28,7 +26,9 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    with open(args.train_dataset_filename) as csv_file:
+    print("#### Started {} {} ####".format(__file__, args));
+
+    with open(args.dataset_filename) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         for row in csv_reader:
             plt.scatter(float(row[1]), float(row[2]), color='blue', s=1, marker='.')
@@ -42,3 +42,5 @@ if __name__ == "__main__":
         plt.savefig(args.save_figure_filename)
     else:
         plt.show()
+
+    print("#### Terminated {} ####".format(__file__));
