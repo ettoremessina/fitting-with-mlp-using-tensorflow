@@ -5,7 +5,7 @@ import time
 import tensorflow.keras.models as tfm
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='pmc2t_predict.py makes a prediction on a test dataset of a one-variable function modeled with a pretrained multilayer perceptron network')
+    parser = argparse.ArgumentParser(description='pmc2t_predict.py makes a prediction on a test dataset of a parametric curve on plan modeled with a couple of pretrained multilayer perceptron networks')
 
     parser.add_argument('--model',
                         type=str,
