@@ -8,11 +8,11 @@ python ../fx_gen.py --dsout datasets/example1_train.csv --fx "$FX" --rbegin $RB 
 python ../fx_fit.py --trainds datasets/example1_train.csv --modelout models/example1 \
   --hlayers 120 160 --hactivations tanh relu \
   --epochs 100 --batch_size 50 \
-  --optimizer 'Adam(epsilon=1e-07)' --learning_rate 0.05 \
+  --optimizer 'Adam(learning_rate=0.05, epsilon=1e-07)' \
   --loss 'MeanSquaredError()'
 
 python ../fx_gen.py --dsout datasets/example1_test.csv  --fx "$FX" --rbegin $RB --rend $RE --rstep 0.0475
-python ../fx_predict.py --model models/example1 --testds datasets/example1_test.csv --predicted predictions/example1_pred.csv
+python ../fx_predict.py --model models/example1 --ds datasets/example1_test.csv --prediction predictions/example1_pred.csv
 
-python ../fx_plot.py --ds datasets/example1_test.csv --predicted predictions/example1_pred.csv
-#python ../fx_plot.py --ds datasets/example1_test.csv --predicted predictions/example1_pred.csv --savefig predictions/example1.png
+python ../fx_plot.py --ds datasets/example1_test.csv --prediction predictions/example1_pred.csv
+#python ../fx_plot.py --ds datasets/example1_test.csv --prediction predictions/example1_pred.csv --savefig predictions/example1.png

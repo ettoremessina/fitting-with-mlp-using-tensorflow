@@ -4,9 +4,9 @@ The function fitting is implemented using a configurable multilayer perceptron n
 
 It contains four python programs:
  - **fx_gen.py** generates a synthetic dataset file invoking a one-variable real function on an real interval.
- - **fx_fit.py** fits a one-variable function in an interval using a configurable multilayer perceptron neural network.
- - **fx_predict.py** makes a prediction on a test dataset of a one-variable function modeled with a pretrained multilayer perceptron neural network.
- - **fx_plot.py** shows two overlapped x/y scatter graphs: the blue one is the dataset, the red one is the predicted one.
+ - **fx_fit.py** fits a one-variable function in an interval using a configurable multilayer perceptron.
+ - **fx_predict.py** makes a prediction of a one-variable function modeled with a pretrained multilayer perceptron.
+ - **fx_plot.py** shows two overlapped x/y scatter graphs: the blue one is the input dataset, the red one is the prediction.
 
 ### Predefined examples of usage of the four command in cascade
 In the subfolder **examples** there are nine shell scripts to fit nine different one-variable functions; each script executes the four programs in cascade in order to reach and show the goal.
@@ -28,12 +28,12 @@ For details about the four commands and their command line options, please read 
 
 
 ## fx_gen.py
-To get the usage of [fx_gen.py](./fx_gen.py) please run
+To get the usage of [fx_gen.py](./fx_gen.py) please run:
 ```bash
 $ python fx_gen.py --help
 ```
 
-and you get
+and you get:
 ```
 usage: fx_gen.py [-h]
                  --dsout DS_OUTPUT_FILENAME
@@ -46,21 +46,20 @@ fx_gen.py generates a synthetic dataset file calling a one-variable real
 function in an interval
 
 optional arguments:
-  -h, --help            show this help message and exit
-  --dsout DS_OUTPUT_FILENAME
-                        dataset output file (csv format)
-  --fx FUNC_X_BODY      f(x) body (lamba format)
-  --rbegin RANGE_BEGIN  begin range (default:-5.0)
-  --rend RANGE_END      end range (default:+5.0)
-  --rstep RANGE_STEP    step range (default: 0.01)
+  -h, --help                 show this help message and exit
+  --dsout DS_OUTPUT_FILENAME dataset output file (csv format)
+  --fx FUNC_X_BODY           f(x) body (lamba format)
+  --rbegin RANGE_BEGIN       begin range (default:-5.0)
+  --rend RANGE_END           end range (default:+5.0)
+  --rstep RANGE_STEP         step range (default: 0.01)
 ```
 
-where:
+Namely:
 - **-h or --help** shows the above usage
 - **--rbegin** and **--rend** are the limit of the closed interval of reals of independent variable x.
-- **--rstep** is the increment step of independent variable x into interval.
+- **--rstep** is the incremental step of independent variable x into the interval.
 - **--fx** is the function to use to compute the value of dependent variable; it is in lamba body format.
-- **--dsout** is the target dataset file name. The content of this file is csv and each line contains a couple of real numbers: the x and the f(x) where x is a value of the interval and f(x) is the value of dependent variable; the dataset is sorted by independent variable x. This argument is mandatory.
+- **--dsout** is the target dataset file name. The content of this file is csv (no header at first line) and each line contains a couple of real numbers: the x and the f(x) where x is a value of the interval and f(x) is the value of dependent variable. This argument is mandatory.
 
 ### Examples of fx_gen.py usage
 ```bash
@@ -71,48 +70,44 @@ $ python fx_gen.py --dsout mydataset.csv  --fx "np.sqrt(np.abs(x))" --rbegin -5.
 
 
 ## fx_fit.py
-To get the usage of [fx_fit.py](./fx_fit.py) please run
+To get the usage of [fx_fit.py](./fx_fit.py) please run:
 ```bash
 $ python fx_fit.py --help
 ```
 
-and you get
+and you get:
 ```
 usage: fx_fit.py [-h]
                  --trainds TRAIN_DATASET_FILENAME
                  --modelout MODEL_PATH
                  [--epochs EPOCHS] [--batch_size BATCH_SIZE]
-                 [--learning_rate LEARNING_RATE]
                  [--hlayers HIDDEN_LAYERS_LAYOUT [HIDDEN_LAYERS_LAYOUT ...]]
                  [--hactivations ACTIVATION_FUNCTIONS [ACTIVATION_FUNCTIONS ...]]
-                 [--optimizer OPTIMIZER] [--loss LOSS]
+                 [--optimizer OPTIMIZER]
+                 [--loss LOSS]
 
-fx_fit.py fits a one-variable function in an interval using a configurable
-multilayer perceptron network
+fx_fit.py fits a one-variable function dataset using a configurable multilayer perceptron
 
 optional arguments:
   -h, --help                        show this help message and exit
   --trainds TRAIN_DATASET_FILENAME  train dataset file (csv format)
-  --modelout MODEL_PATH             output model path
+  --modelout MODEL_PATH             output model directory
   --epochs EPOCHS                   number of epochs
   --batch_size BATCH_SIZE           batch size
-  --learning_rate LEARNING_RATE     learning rate
-  --hlayers HIDDEN_LAYERS_LAYOUT [HIDDEN_LAYERS_LAYOUT ...] number of neurons for each hidden layers
-  --hactivations ACTIVATION_FUNCTIONS [ACTIVATION_FUNCTIONS ...] activation functions between layers
-  --optimizer OPTIMIZER             optimizer algorithm object
-  --loss LOSS                       loss function name
+  --hlayers HIDDEN_LAYERS_LAYOUT [HIDDEN_LAYERS_LAYOUT ...] number of neurons for each hidden layer
+  --hactivations ACTIVATION_FUNCTIONS [ACTIVATION_FUNCTIONS ...] activation functions between layer
+  --optimizer OPTIMIZER             optimizer algorithm
+  --loss LOSS                       loss function
 ```
 
-where:
+Namely:
 - **-h or --help** shows the above usage
-- **--trainds** is the input training dataset in csv format: a couple of real number for each line respectively for x and y (no header in first line). In case you haven't a such real world true dataset, for your experiments you can generate it synthetically using **fx_gen.py**. This argument is mandatory.
-- **--modelout** is a non-existing path where the program saves the trained model (in tf native format). This argument is mandatory.
+- **--trainds** is the input training dataset in csv format: a couple of real number for each line respectively for x and y (no header at first line). In case you haven't a such real world true dataset, for your experiments you can generate it synthetically using **fx_gen.py**. This argument is mandatory.
+- **--modelout** is a non-existing directory where the program saves the trained model (in tf native format). This argument is mandatory.
 - **--epochs** is the number of epochs of the training process. The default is **500**
 - **--batch_size** is the size of the batch used during training. The default is **50**
-- **--learning_rate** is the learning rate. The default depends by the chosen optimizer (see below) in according with [TensorFlow 2 optimizer reference](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers).\
-**Note:** the learning rate can be passed either via **--learning_rate** command line argument or via **learning_rate** named parameter of constructor (see below), but never in both way.
 - **--hlayers** is a sequence of integers: the size of the sequence is the number of hidden layers, each value of the sequence is the number of neurons in the correspondent layer. The default is **100** (one only hidden layer with 100 neurons),
-- **--hactivations** is a sequence of activation functions: the size of the sequence must be equal to the number of layers and each item of the sequence is the activation function to apply to the output of the neurons of the correspondent layer. Please see [TensorFlow 2 activation function reference](https://www.tensorflow.org/api_docs/python/tf/keras/activations) for details.\
+- **--hactivations** is a sequence of activation function names: the size of the sequence must be equal to the number of layers and each item of the sequence is the activation function to apply to the output of the neurons of the correspondent layer; please see [TensorFlow 2 activation function reference](https://www.tensorflow.org/api_docs/python/tf/keras/activations) for details and examples at the end of this section.\
   Available activation functions are:
   - elu
   - exponential
@@ -174,8 +169,7 @@ $ python fx_fit.py \
   --hactivations tanh relu \
   --epochs 100 \
   --batch_size 50 \
-  --optimizer 'Adam(epsilon=1e-07)' \
-  --learning_rate 0.05 \
+  --optimizer 'Adam(learning_rate 0.05, epsilon=1e-07)' \
   --loss 'MeanSquaredError()'
 
 $ python fx_fit.py \
@@ -185,8 +179,7 @@ $ python fx_fit.py \
   --hactivation sigmoid sigmoid sigmoid \
   --epochs 1000 \
   --batch_size 200 \
-  --optimizer 'Adamax()' \
-  --learning_rate 0.02
+  --optimizer 'Adamax(learning_rate=0.02)
 
 $ python fx_fit.py \
   --trainds mytrainds.csv \
@@ -205,32 +198,31 @@ To get the usage of [fx_predict.py](./fx_predict.py) please run
 $ python fx_predict.py --help
 ```
 
-and you get
+and you get:
 ```
 usage: fx_predict.py [-h]
                      --model MODEL_PATH
-                     --testds TEST_DATASET_FILENAME
-                     --predictedout PREDICTED_DATA_FILENAME
+                     --ds TEST_DATASET_FILENAME
+                     --predictionout PREDICTION_DATA_FILENAME
 
-fx_predict.py makes a prediction on a test dataset of a one-variable function
-modeled with a pretrained multilayer perceptron network
+fx_predict.py makes prediction of the values of a one-variable function modeled with a pretrained multilayer perceptron
 
 optional arguments:
   -h, --help                              show this help message and exit
-  --model MODEL_PATH                      model path
-  --testds TEST_DATASET_FILENAME          test dataset file (csv format)
-  --predictedout PREDICTED_DATA_FILENAME  predicted data file (csv format)
+  --model MODEL_PATH                      model directory
+  --ds DATASET_FILENAME                   input dataset file (csv format); only x-values are used
+  --predictionout PREDICTION_DATA_FILENAME prediction data file (csv format)
 ```
 
-where:
+Namely:
 - **-h or --help** shows the above usage
-- **--model** is the path of a model generated by **fx_fit.py** (see **--modelout** command line parameter of **fx_fit.py**). This argument is mandatory.
-- **--testds** is the input test dataset in csv format: a couple of real number for each line respectively for x and y (no header in first line). In case you haven't a such real world true dataset, for your experiments you can generate it synthetically using **fx_gen.py**. This argument is mandatory.
-- **--predictedout** is the file name of predicted values. The content of this file is csv and each line contains a couple of real numbers: the x value come from test dataset and the predicted f(x); This argument is mandatory.
+- **--model** is the directory of a model generated by **fx_fit.py** (see **--modelout** command line parameter of **fx_fit.py**). This argument is mandatory.
+- **--ds** is the input dataset in csv format (no header at first line): program uses only the x values (first column). In case you haven't a such real world true dataset, for your experiments you can generate it synthetically using **fx_gen.py**. This argument is mandatory.
+- **--predictionout** is the file name of prediction values. The content of this file is csv (no header at first line) and each line contains a couple of real numbers: the x value comes from input dataset and the prediction is the value of f(x) computed by multilayer perceptron model on x value; this argument is mandatory.
 
 ### Example of fx_predict.py usage
 ```bash
-$ python fx_predict.py --model mymodel --testds mytestds.csv --predictedout myprediction.csv
+$ python fx_predict.py --model mymodel --ds mytestds.csv --predictionout myprediction.csv
 ```
 
 
@@ -240,31 +232,31 @@ To get the usage of [fx_plot.py](./fx_plot.py) please run
 $ python fx_plot.py --help
 ```
 
-and you get
+and you get:
 ```
 usage: fx_plot.py [-h]
                   --ds DATASET_FILENAME
-                  --predicted PREDICTED_DATA_FILENAME
+                  --prediction PREDICTION_DATA_FILENAME
                   [--savefig SAVE_FIGURE_FILENAME]
 
 fx_plot.py shows two overlapped x/y scatter graphs: the blue one is the dataset,
-the red one is the prediction
+the red one is the prediction one
 
 optional arguments:
   -h, --help            show this help message and exit
   --ds DATASET_FILENAME dataset file (csv format)
-  --predicted PREDICTED_DATA_FILENAME  predicted data file (csv format)
+  --prediction PREDICTION_DATA_FILENAME  prediction data file (csv format)
   --savefig SAVE_FIGURE_FILENAME       if present, the chart is saved on a file instead to be shown on screen
 ```
-where:
+Namely:
 - **-h or --help** shows the above usage
-- **--ds** is an input dataset in csv format. Usually this parameter is the test dataset file passed to **fx_predict.py**, but you could pass the training dataset passed to **fx_fit.py**. This argument is mandatory.
-- **--predicted** is the file name of predicted values generated by **fx_predict.py** (see **--predictedout** command line parameter of **fx_predict.py**). This argument is mandatory.
+- **--ds** is an input dataset in csv format (no header at first line). Usually this parameter is the test dataset file passed to **fx_predict.py**, but you could pass the training dataset passed to **fx_fit.py**. This argument is mandatory.
+- **--prediction** is the file name of prediction values generated by **fx_predict.py** (see **--predictionout** command line parameter of **fx_predict.py**). This argument is mandatory.
 - **--savefig** if this argument is missing, the chart is shown on screen, otherwise this argument is the png output filename where **fx_plot.py** saves the chart.
 
 ### Examples of fx_plot.py usage
 ```bash
-$ python fx_plot.py --ds mytestds.csv --predicted myprediction.csv
+$ python fx_plot.py --ds mytestds.csv --prediction myprediction.csv
 
-$ python fx_plot.py --ds mytrainds.csv --predicted myprediction.csv --savefig mychart.png
+$ python fx_plot.py --ds mytrainds.csv --prediction myprediction.csv --savefig mychart.png
 ```

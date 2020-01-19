@@ -25,15 +25,6 @@ def build_activation_function(af):
 
 def build_optimizer():
     opt_init = args.optimizer
-    bracket_pos = opt_init.find('(')
-    if bracket_pos == -1:
-        raise Exception('Wrong optimizer syntax')
-    opt_init_tail = opt_init[bracket_pos+1:].strip()
-    if opt_init_tail != ')':
-        opt_init_tail = ', ' + opt_init_tail
-    if len(args.learning_rate.strip()) > 0:
-        opt_init_tail = 'learning_rate=' + args.learning_rate + opt_init_tail
-    opt_init = opt_init[:bracket_pos+1] + opt_init_tail
     exp_po = 'lambda _ : tko.' + opt_init
     optimizer = eval(exp_po)(None)
     return optimizer
@@ -55,7 +46,7 @@ if __name__ == "__main__":
                         type=str,
                         dest='model_path',
                         required=True,
-                        help='output model path')
+                        help='output model directory')
 
     parser.add_argument('--epochs',
                         type=int,
@@ -71,16 +62,9 @@ if __name__ == "__main__":
                         default=50,
                         help='batch size')
 
-    parser.add_argument('--learning_rate',
-                        type=str,
-                        dest='learning_rate',
-                        required=False,
-                        default='',
-                        help='learning rate')
-
     parser.add_argument('--hlayers',
                         type=int,
-                        nargs='+',
+                        nargs = '+',
                         dest='hidden_layers_layout',
                         required=False,
                         default=[100],
@@ -88,7 +72,7 @@ if __name__ == "__main__":
 
     parser.add_argument('--hactivations',
                         type=str,
-                        nargs='+',
+                        nargs = '+',
                         dest='activation_functions',
                         required=False,
                         default=['relu'],
@@ -99,7 +83,7 @@ if __name__ == "__main__":
                         dest='optimizer',
                         required=False,
                         default='Adam()',
-                        help='optimizer algorithm object')
+                        help='optimizer algorithm')
 
     parser.add_argument('--loss',
                         type=str,

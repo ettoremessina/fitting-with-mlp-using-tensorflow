@@ -1,5 +1,6 @@
 import argparse
 import csv
+import os
 import time
 import numpy as np
 import tensorflow.keras.optimizers as tko
@@ -9,11 +10,11 @@ from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras.models import Model
 
 def build_model():
-    inputs = Input(shape=(1,), name='t_input')
+    inputs = Input(shape=(1,))
     hidden = inputs
     for i in range(0, len(args.hidden_layers_layout)):
         hidden = Dense(args.hidden_layers_layout[i], activation=build_activation_function(args.activation_functions[i]))(hidden)
-    outputs = [Dense(1, name='x_output')(hidden), Dense(1, name='y_output')(hidden)]
+    outputs = Dense(1)(hidden)
     model = Model(inputs=inputs, outputs=outputs)
     return model
 
@@ -25,15 +26,6 @@ def build_activation_function(af):
 
 def build_optimizer():
     opt_init = args.optimizer
-    bracket_pos = opt_init.find('(')
-    if bracket_pos == -1:
-        raise Exception('Wrong optimizer syntax')
-    opt_init_tail = opt_init[bracket_pos+1:].strip()
-    if opt_init_tail != ')':
-        opt_init_tail = ', ' + opt_init_tail
-    if len(args.learning_rate.strip()) > 0:
-        opt_init_tail = 'learning_rate=' + args.learning_rate + opt_init_tail
-    opt_init = opt_init[:bracket_pos+1] + opt_init_tail
     exp_po = 'lambda _ : tko.' + opt_init
     optimizer = eval(exp_po)(None)
     return optimizer
@@ -43,7 +35,7 @@ def build_loss():
     return eval(exp_loss)(None)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='pmc2t_fit_1.py fits a parametric curve on plan dataset using one configurable multilayer perceptron network with 1 neuron in input and 2 neurons in output')
+    parser = argparse.ArgumentParser(description='pmc2t_fit_twin.py fits a parametric curve on plan dataset using two equals configurable multilayer perceptron networks both with 1 neuron in input and 1 neuron in output')
 
     parser.add_argument('--trainds',
                         type=str,
@@ -55,7 +47,7 @@ if __name__ == "__main__":
                         type=str,
                         dest='model_path',
                         required=True,
-                        help='output model path')
+                        help='output model directory')
 
     parser.add_argument('--epochs',
                         type=int,
@@ -71,16 +63,9 @@ if __name__ == "__main__":
                         default=50,
                         help='batch size')
 
-    parser.add_argument('--learning_rate',
-                        type=str,
-                        dest='learning_rate',
-                        required=False,
-                        default='',
-                        help='learning rate')
-
     parser.add_argument('--hlayers',
                         type=int,
-                        nargs='+',
+                        nargs = '+',
                         dest='hidden_layers_layout',
                         required=False,
                         default=[100],
@@ -88,7 +73,7 @@ if __name__ == "__main__":
 
     parser.add_argument('--hactivations',
                         type=str,
-                        nargs='+',
+                        nargs = '+',
                         dest='activation_functions',
                         required=False,
                         default=['relu'],
@@ -125,17 +110,27 @@ if __name__ == "__main__":
             x_train.append(float(row[1]))
             y_train.append(float(row[2]))
 
-    model = build_model()
+    model_x = build_model()
+    model_y = build_model()
 
-    optimizer = build_optimizer()
-    model.compile(loss=build_loss(), optimizer=optimizer)
-    model.summary()
+    optimizer_x = build_optimizer()
+    if optimizer_x is None:
+        raise Exception('Unknown optimizer {}'.format(args.optimizer_name))
+
+    optimizer_y = build_optimizer()
+
+    model_x.compile(loss=build_loss(), optimizer=optimizer_x)
+    model_y.compile(loss=build_loss(), optimizer=optimizer_y)
+    model_x.summary()
+    model_y.summary()
 
     start_time = time.time()
-    model.fit({'t_input': np.array(t_train)}, {'x_output': np.array(x_train), 'y_output': np.array(y_train)}, epochs=args.epochs, batch_size=args.batch_size, verbose=1)
+    model_x.fit(t_train, x_train, epochs=args.epochs, batch_size=args.batch_size, verbose=1)
+    model_y.fit(t_train, y_train, epochs=args.epochs, batch_size=args.batch_size, verbose=1)
     elapsed_time = time.time() - start_time
     print ("Training time:", time.strftime("%H:%M:%S", time.gmtime(elapsed_time)))
 
-    model.save(args.model_path)
+    model_x.save(os.path.join(args.model_path, 'x'))
+    model_y.save(os.path.join(args.model_path, 'y'))
 
     print("#### Terminated {} ####".format(__file__));
