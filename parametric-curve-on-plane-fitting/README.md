@@ -56,7 +56,7 @@ usage: pmc2t_gen.py [-h]
   [--rend RANGE_END]
   [--rstep RANGE_STEP]
 
-pmc2t_gen.py generates a synthetic dataset file that contains the points of a parametric curve on plan
+pmc2t_gen.py generates a synthetic dataset file that contains the points of a parametric curve on plane
 calling a couple of one-variable real functions in an interval
 
 optional arguments:
@@ -101,7 +101,7 @@ usage: pmc2t_fit.py [-h] --trainds
                     [--optimizer OPTIMIZER]
                     [--loss LOSS]
 
-pmc2t_fit.py fits a parametric curve on plan dataset using a configurable
+pmc2t_fit.py fits a parametric curve on plane dataset using a configurable
 multilayer perceptron with two output neurons
 
 optional arguments:
@@ -223,7 +223,7 @@ usage: pmc2t_predict.py [-h]
                         --predictionout PREDICTION_DATA_FILENAME
 
 pmc2t_predict.py makes prediction of couples of coordinates of a parametric curve on
-plan modeled with a pretrained multilayer perceptron with two output neurons
+plane modeled with a pretrained multilayer perceptron with two output neurons
 
 optional arguments:
   -h, --help            show this help message and exit
