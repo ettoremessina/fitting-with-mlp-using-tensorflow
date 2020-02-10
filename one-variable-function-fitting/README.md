@@ -69,7 +69,7 @@ $ python fx_gen.py --dsout mydataset.csv  --fx "np.sqrt(np.abs(x))" --rbegin -5.
 ```
 
 
-## fx_fit.py
+## fx_fit.py<a name="fx_fit"/>
 To get the usage of [fx_fit.py](./fx_fit.py) please run:
 ```bash
 $ python fx_fit.py --help
@@ -192,7 +192,7 @@ $ python fx_fit.py \
 ```
 
 
-## fx_predict.py
+## fx_predict.py<a name="fx_predict"/>
 To get the usage of [fx_predict.py](./fx_predict.py) please run
 ```bash
 $ python fx_predict.py --help
@@ -226,7 +226,7 @@ $ python fx_predict.py --model mymodel --ds mytestds.csv --predictionout mypredi
 ```
 
 
-## fx_plot.py
+## fx_plot.py<a name="fx_plot"/>
 To get the usage of [fx_plot.py](./fx_plot.py) please run
 ```bash
 $ python fx_plot.py --help
