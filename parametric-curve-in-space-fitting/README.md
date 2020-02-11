@@ -12,7 +12,7 @@ It contains four python programs:
 In the subfolder **examples** there are five shell scripts to fit five different parametric curves; each script executes the four programs in cascade in order to reach and show the goal.
 
 ```bash
-$ cd parametric-curve-on-space-fitting/examples
+$ cd parametric-curve-in-space-fitting/examples
 $ sh example1.sh
 $ sh example2.sh
 $ sh example3.sh
