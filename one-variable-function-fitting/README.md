@@ -1,8 +1,7 @@
 # One variable function fitting
 This project implements the fitting of a continuous and limited real-valued function defined in a closed interval of the reals.
-The function fitting is implemented using a configurable multilayer perceptron neural network written using TensorFlow 2 & Keras; TensorFlow 2 & Keras; it requires TensorFlow 2.0.0 or 2.1.0 library and also NumPy and MatPlotLib libraries.
-
-Please visit https://computationalmindset.com/en/posts/neural-networks/one-variable-function-fitting-with-tensorflow.html for concepts about this project.
+The function fitting is implemented using a configurable multilayer perceptron neural network written using TensorFlow 2 & Keras; TensorFlow 2 & Keras; it requires TensorFlow 2.0.0 or 2.1.0 library and also NumPy and MatPlotLib libraries.<br/>
+Please visit [Here](https://computationalmindset.com/en/posts/neural-networks/one-variable-function-fitting-with-tensorflow.html) for concepts about this project.
 
 It contains four python programs:
  - **fx_gen.py** generates a synthetic dataset file invoking a one-variable real function on an real interval.
