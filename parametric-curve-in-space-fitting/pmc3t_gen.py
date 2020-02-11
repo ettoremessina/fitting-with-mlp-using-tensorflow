@@ -3,7 +3,7 @@ import numpy as np
 import csv
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='pmc3t_gen.py generates a synthetic dataset file that contains the points of a parametric curve on space calling a triple of one-variable real functions in an interval')
+    parser = argparse.ArgumentParser(description='pmc3t_gen.py generates a synthetic dataset file that contains the points of a parametric curve in space calling a triple of one-variable real functions in an interval')
 
     parser.add_argument('--dsout',
                         type=str,

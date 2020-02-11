@@ -4,7 +4,7 @@ import time
 import tensorflow.keras.models as tfm
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='pmc3t_predict.py makes prediction of triples of coordinates of a parametric curve on space modeled with a pretrained multilayer perceptron with two output neurons')
+    parser = argparse.ArgumentParser(description='pmc3t_predict.py makes prediction of triples of coordinates of a parametric curve in space modeled with a pretrained multilayer perceptron with two output neurons')
 
     parser.add_argument('--model',
                         type=str,

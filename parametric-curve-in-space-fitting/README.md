@@ -1,11 +1,11 @@
-# Parametric curve on space fitting
-This project implements the fitting of a continuous and limited real-valued parametric curve on space where parameter belongs to a closed interval of the reals.
+# Parametric curve in space fitting
+This project implements the fitting of a continuous and limited real-valued parametric curve in space where parameter belongs to a closed interval of the reals.
 The curve fitting is implemented using a configurable multilayer perceptron neural network written using TensorFlow 2 & Keras; it requires TensorFlow 2.0.0 or 2.1.0 library and also NumPy and MatPlotLib libraries.
 
 It contains four python programs:
 - **pmc3t_gen.py** generates a synthetic dataset file invoking a triple of one-variable real functions defined on an real interval: first one for x=x(t) coordinate, second one for y=y(t) coordinate and third one for z=z(t) coordinate
-- **pmc3t_fit.py** fits a parametric curve on space using a configurable multilayer perceptron in order to fit a vector function f(t) = [x(t), y(t), z(t)].
-- **pmc3t_predict.py** makes a prediction on a parametric curve on space modeled with a pretrained multilayer perceptron.
+- **pmc3t_fit.py** fits a parametric curve in space using a configurable multilayer perceptron in order to fit a vector function f(t) = [x(t), y(t), z(t)].
+- **pmc3t_predict.py** makes a prediction on a parametric curve in space modeled with a pretrained multilayer perceptron.
 - **pmc3t_plot.py** shows two overlapped x/y/z scatter graphs: the blue one is the input dataset, the red one is the prediction.
 
 ### Predefined examples of usage of the four command in cascade
@@ -87,7 +87,7 @@ usage: pmc3t_fit.py [-h] --trainds
                     [--optimizer OPTIMIZER]
                     [--loss LOSS]
 
-pmc3t_fit.py fits a parametric curve on space dataset using a configurable
+pmc3t_fit.py fits a parametric curve in space dataset using a configurable
 multilayer perceptron with two output neurons
 
 optional arguments:
