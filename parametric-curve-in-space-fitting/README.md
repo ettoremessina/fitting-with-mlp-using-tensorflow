@@ -91,7 +91,7 @@ usage: pmc3t_fit.py [-h] --trainds
                     [--loss LOSS]
 
 pmc3t_fit.py fits a parametric curve in space dataset using a configurable
-multilayer perceptron with two output neurons
+multilayer perceptron with three output neurons
 
 optional arguments:
  -h, --help                       show this help message and exit
@@ -197,7 +197,7 @@ usage: pmc3t_predict.py [-h]
                         --predictionout PREDICTION_DATA_FILENAME
 
 pmc3t_predict.py makes prediction of couples of coordinates of a parametric curve
-in space modeled with a pretrained multilayer perceptron with two output neurons
+in space modeled with a pretrained multilayer perceptron with three output neurons
 
 optional arguments:
   -h, --help            show this help message and exit
