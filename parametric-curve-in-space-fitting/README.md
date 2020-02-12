@@ -1,6 +1,9 @@
 # Parametric curve in space fitting
 This project implements the fitting of a continuous and limited real-valued parametric curve in space where parameter belongs to a closed interval of the reals.
-The curve fitting is implemented using a configurable multilayer perceptron neural network written using TensorFlow 2 & Keras; it requires TensorFlow 2.0.0 or 2.1.0 library and also NumPy and MatPlotLib libraries.
+The curve fitting is implemented using a configurable multilayer perceptron neural network written using TensorFlow 2 & Keras; it requires TensorFlow 2.0.0 or 2.1.0 library and also NumPy and MatPlotLib libraries.<br />
+
+Please visit [here](https://computationalmindset.com/en/posts/neural-networks/parametric-curve-in-space-fitting-with-tensorflow.html) for concepts about this project.
+
 
 It contains four python programs:
 - **pmc3t_gen.py** generates a synthetic dataset file invoking a triple of one-variable real functions defined on an real interval: first one for x=x(t) coordinate, second one for y=y(t) coordinate and third one for z=z(t) coordinate
@@ -40,7 +43,7 @@ usage: pmc3t_gen.py [-h]
   [--rend RANGE_END]
   [--rstep RANGE_STEP]
 
-pmc3t_gen.py generates a synthetic dataset file that contains the points of a parametric curve on plane
+pmc3t_gen.py generates a synthetic dataset file that contains the points of a parametric curve in space
 calling a triple of one-variable real functions in an interval
 
 optional arguments:
@@ -193,8 +196,8 @@ usage: pmc3t_predict.py [-h]
                         --ds DATASET_FILENAME
                         --predictionout PREDICTION_DATA_FILENAME
 
-pmc3t_predict.py makes prediction of couples of coordinates of a parametric curve on
-plane modeled with a pretrained multilayer perceptron with two output neurons
+pmc3t_predict.py makes prediction of couples of coordinates of a parametric curve
+in space modeled with a pretrained multilayer perceptron with two output neurons
 
 optional arguments:
   -h, --help            show this help message and exit

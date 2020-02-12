@@ -10,4 +10,5 @@ The project [Parametric curve on plane fitting](./parametric-curve-on-plane-fitt
 Please visit [here](https://computationalmindset.com/en/posts/neural-networks/parametric-curve-on-plane-fitting-with-tensorflow.html) for concepts about this project.
 
 ## Parametric curve in space fitting
-The project [Parametric curve in space fitting](./parametric-curve-in-space-fitting) implements the fitting of a continuous and limited real-valued parametric curve in space where parameter belongs to a closed interval of the reals.
+The project [Parametric curve in space fitting](./parametric-curve-in-space-fitting) implements the fitting of a continuous and limited real-valued parametric curve in space where parameter belongs to a closed interval of the reals.<br />
+Please visit [here](https://computationalmindset.com/en/posts/neural-networks/parametric-curve-in-space-fitting-with-tensorflow.html) for concepts about this project.

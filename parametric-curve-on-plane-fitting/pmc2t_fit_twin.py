@@ -35,7 +35,7 @@ def build_loss():
     return eval(exp_loss)(None)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='pmc2t_fit_twin.py fits a parametric curve on plan dataset using two equals configurable multilayer perceptron networks both with 1 neuron in input and 1 neuron in output')
+    parser = argparse.ArgumentParser(description='pmc2t_fit_twin.py fits a parametric curve on plane dataset using two equals configurable multilayer perceptron networks both with 1 neuron in input and 1 neuron in output')
 
     parser.add_argument('--trainds',
                         type=str,
