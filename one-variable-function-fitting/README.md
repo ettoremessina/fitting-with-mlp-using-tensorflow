@@ -1,17 +1,17 @@
-# One variable function fitting
+# One-variable real-valued function fitting
 This project implements the fitting of a continuous and limited real-valued function defined in a closed interval of the reals.
-The function fitting is implemented using a configurable multilayer perceptron neural network written using TensorFlow 2 & Keras; TensorFlow 2 & Keras; it requires TensorFlow 2.0.0 or 2.1.0 library and also NumPy and MatPlotLib libraries.<br/>
+This one-variable real-valued function fitting is implemented using a configurable multilayer perceptron neural network written using TensorFlow 2 & Keras; it requires TensorFlow 2.0.0 or 2.1.0 library and also NumPy and MatPlotLib libraries.<br/>
 
 Please visit [here](https://computationalmindset.com/en/posts/neural-networks/one-variable-function-fitting-with-tensorflow.html) for concepts about this project.
 
 It contains four python programs:
- - **fx_gen.py** generates a synthetic dataset file invoking a one-variable real function on an real interval.
- - **fx_fit.py** fits a one-variable function in an interval using a configurable multilayer perceptron.
- - **fx_predict.py** makes a prediction of a one-variable function modeled with a pretrained multilayer perceptron.
+ - **fx_gen.py** generates a synthetic dataset file invoking a one-variable real-valued function on an real interval.
+ - **fx_fit.py** fits a one-variable real-valued function in an interval using a configurable multilayer perceptron.
+ - **fx_predict.py** makes a prediction of a one-variable real-valued function modeled with a pretrained multilayer perceptron.
  - **fx_plot.py** shows two overlapped x/y scatter graphs: the blue one is the input dataset, the red one is the prediction.
 
 ### Predefined examples of usage of the four command in cascade
-In the subfolder **examples** there are nine shell scripts to fit nine different one-variable functions; each script executes the four programs in cascade in order to reach and show the goal.
+In the subfolder **examples** there are nine shell scripts to fit nine different one-variable real-valued functions; each script executes the four programs in cascade in order to reach and show the goal.
 
 ```bash
 $ cd one-variable-function-fitting/examples
@@ -44,8 +44,7 @@ usage: fx_gen.py [-h]
                  [--rend RANGE_END]
                  [--rstep RANGE_STEP]
 
-fx_gen.py generates a synthetic dataset file calling a one-variable real
-function in an interval
+fx_gen.py generates a synthetic dataset file calling a one-variable real-valued function in an interval
 
 optional arguments:
   -h, --help                 show this help message and exit
@@ -60,8 +59,8 @@ Namely:
 - **-h or --help** shows the above usage
 - **--rbegin** and **--rend** are the limit of the closed interval of reals of independent variable x.
 - **--rstep** is the incremental step of independent variable x into the interval.
-- **--fx** is the function to use to compute the value of dependent variable; it is in lamba body format.
-- **--dsout** is the target dataset file name. The content of this file is csv (no header at first line) and each line contains a couple of real numbers: the x and the f(x) where x is a value of the interval and f(x) is the value of dependent variable. This argument is mandatory.
+- **--fx** is the one-variable real-value function to use to compute the value of dependent variable; it is in lamba body format.
+- **--dsout** is the target dataset file name. The content of this file is csv (no header at first line) and each line contains a pair of real numbers: the x and the f(x) where x is a value of the interval and f(x) is the value of dependent variable. This argument is mandatory.
 
 ### Examples of fx_gen.py usage
 ```bash
@@ -88,7 +87,7 @@ usage: fx_fit.py [-h]
                  [--optimizer OPTIMIZER]
                  [--loss LOSS]
 
-fx_fit.py fits a one-variable function dataset using a configurable multilayer perceptron
+fx_fit.py fits a one-variable real-valued function dataset using a configurable multilayer perceptron
 
 optional arguments:
   -h, --help                        show this help message and exit
@@ -104,7 +103,7 @@ optional arguments:
 
 Namely:
 - **-h or --help** shows the above usage
-- **--trainds** is the input training dataset in csv format: a couple of real number for each line respectively for x and y (no header at first line). In case you haven't a such real world true dataset, for your experiments you can generate it synthetically using **fx_gen.py**. This argument is mandatory.
+- **--trainds** is the input training dataset in csv format: a pair of real numbers for each line respectively for x and y (no header at first line). In case you haven't a such real world true dataset, for your experiments you can generate it synthetically using **fx_gen.py**. This argument is mandatory.
 - **--modelout** is a non-existing directory where the program saves the trained model (in tf native format). This argument is mandatory.
 - **--epochs** is the number of epochs of the training process. The default is **500**
 - **--batch_size** is the size of the batch used during training. The default is **50**
@@ -207,7 +206,7 @@ usage: fx_predict.py [-h]
                      --ds TEST_DATASET_FILENAME
                      --predictionout PREDICTION_DATA_FILENAME
 
-fx_predict.py makes prediction of the values of a one-variable function modeled with a pretrained multilayer perceptron
+fx_predict.py makes prediction of the values of a one-variable real-valued function modeled with a pretrained multilayer perceptron
 
 optional arguments:
   -h, --help                              show this help message and exit
@@ -220,7 +219,7 @@ Namely:
 - **-h or --help** shows the above usage
 - **--model** is the directory of a model generated by **fx_fit.py** (see **--modelout** command line parameter of **fx_fit.py**). This argument is mandatory.
 - **--ds** is the input dataset in csv format (no header at first line): program uses only the x values (first column). In case you haven't a such real world true dataset, for your experiments you can generate it synthetically using **fx_gen.py**. This argument is mandatory.
-- **--predictionout** is the file name of prediction values. The content of this file is csv (no header at first line) and each line contains a couple of real numbers: the x value comes from input dataset and the prediction is the value of f(x) computed by multilayer perceptron model on x value; this argument is mandatory.
+- **--predictionout** is the file name of prediction values. The content of this file is csv (no header at first line) and each line contains a pair of real numbers: the x value comes from input dataset and the prediction is the value of f(x) computed by multilayer perceptron model on x value; this argument is mandatory.
 
 ### Example of fx_predict.py usage
 ```bash
@@ -241,8 +240,7 @@ usage: fx_plot.py [-h]
                   --prediction PREDICTION_DATA_FILENAME
                   [--savefig SAVE_FIGURE_FILENAME]
 
-fx_plot.py shows two overlapped x/y scatter graphs: the blue one is the dataset,
-the red one is the prediction one
+fx_plot.py shows two overlapped x/y scatter graphs: the blue one is the dataset, the red one is the prediction one
 
 optional arguments:
   -h, --help            show this help message and exit

@@ -107,7 +107,7 @@ optional arguments:
 
 Namely:
 - **-h or --help** shows the above usage
-- **--trainds** is the input training dataset in csv format:four real numbers for each line respectively for t, x, y and z (no header at first line). In case you haven't a such real world true dataset, for your experiments you can generate it synthetically using **pmc3t_gen.py**. This argument is mandatory.
+- **--trainds** is the input training dataset in csv format: four real numbers for each line respectively for t, x, y and z (no header at first line). In case you haven't a such real world true dataset, for your experiments you can generate it synthetically using **pmc3t_gen.py**. This argument is mandatory.
 - **--modelout** is a non-existing file where the program saves the trained model (in pth format). This argument is mandatory.
 - **--epochs** is the number of epochs of the training process. The default is **500**
 - **--batch_size** is the size of the batch used during training. The default is **50**
@@ -157,7 +157,7 @@ Namely:
   - SquaredHinge()\
   The default is **MeanSquaredError()**.
 
-### Examples of pmc3t_fit.py
+### Examples of pmc3t_fit.py usage
 ```bash
 $ python pmc3t_fit.py \
   --trainds mytrainds.csv \
