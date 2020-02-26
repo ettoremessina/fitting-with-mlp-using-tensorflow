@@ -125,7 +125,7 @@ Namely:
   - softplus
   - softsign
   - tanh\
-  The default is **relu** (applied to one only hidden layer; if number of layers are > 1, this argument becomes mandatory).
+  The default is **relu** (applied to one only hidden layer; if number of layers is > 1, this argument becomes mandatory).
 - **--optimizer** is the constructor call of the algorithm used by the training process. You can pass also named arguments between round brackets; please see [TensorFlow 2 optimizer reference](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers) for details about constructor named parameters and examples at the end of this section.\
   Available algorithm constructors are:
   - Adadelta()

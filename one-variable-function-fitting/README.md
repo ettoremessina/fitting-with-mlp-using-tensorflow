@@ -107,7 +107,7 @@ Namely:
 - **--modelout** is a non-existing directory where the program saves the trained model (in tf native format). This argument is mandatory.
 - **--epochs** is the number of epochs of the training process. The default is **500**
 - **--batch_size** is the size of the batch used during training. The default is **50**
-- **--hlayers** is a sequence of integers: the size of the sequence is the number of hidden layers, each value of the sequence is the number of neurons in the correspondent layer. The default is **100** (one only hidden layer with 100 neurons),
+- **--hlayers** is a sequence of integers: the size of the sequence is the number of hidden layers, each value of the sequence is the number of neurons in the correspondent layer. The default is **100** (that means one only hidden layer with 100 neurons),
 - **--hactivations** is a sequence of activation function names: the size of the sequence must be equal to the number of layers and each item of the sequence is the activation function to apply to the output of the neurons of the correspondent layer; please see [TensorFlow 2 activation function reference](https://www.tensorflow.org/api_docs/python/tf/keras/activations) for details and examples at the end of this section.\
   Available activation functions are:
   - elu
@@ -121,7 +121,7 @@ Namely:
   - softplus
   - softsign
   - tanh\
-  The default is **relu** (applied to one only hidden layer; if number of layers are > 1, this argument becomes mandatory).
+  The default is **relu** (applied to one only hidden layer; if number of layers is > 1, this argument becomes mandatory).
 - **--optimizer** is the constructor call of the algorithm used by the training process. You can pass also named arguments between round brackets; please see [TensorFlow 2 optimizer reference](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers) for details about constructor named parameters and examples at the end of this section.\
   Available algorithm constructors are:
   - Adadelta()
@@ -209,9 +209,9 @@ usage: fx_predict.py [-h]
 fx_predict.py makes prediction of the values of a one-variable real-valued function modeled with a pretrained multilayer perceptron
 
 optional arguments:
-  -h, --help                              show this help message and exit
-  --model MODEL_PATH                      model directory
-  --ds DATASET_FILENAME                   input dataset file (csv format); only x-values are used
+  -h, --help                               show this help message and exit
+  --model MODEL_PATH                       model directory
+  --ds DATASET_FILENAME                    input dataset file (csv format); only x-values are used
   --predictionout PREDICTION_DATA_FILENAME prediction data file (csv format)
 ```
 
