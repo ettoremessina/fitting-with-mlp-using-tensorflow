@@ -2,7 +2,7 @@
 This project implements the fitting of a continuous and limited real-valued parametric curve on plane where parameter belongs to a closed interval of the reals.
 The curve fitting is implemented using a configurable multilayer perceptron neural network written using TensorFlow 2 & Keras; it requires TensorFlow 2.0.0 or 2.1.0 library and also NumPy and MatPlotLib libraries.<br />
 
-Please visit [here](https://computationalmindset.com/en/posts/neural-networks/parametric-curve-on-plane-fitting-with-tensorflow.html) for concepts about this project.
+Please visit [here](https://computationalmindset.com/en/neural-networks/parametric-curve-on-plane-fitting-with-tensorflow.html) for concepts about this project.
 
 It contains four python programs:
 - **pmc2t_gen.py** generates a synthetic dataset file invoking a pair of one-variable real functions defined on an real interval: first one for x=x(t) coordinate and the other one for y=y(t) coordinate.

@@ -2,6 +2,8 @@
 This project implements the fitting of a continuous and limited real-valued function of two variables constrained in a rectangle.
 This two-variables real-valued function fitting is implemented using a configurable multilayer perceptron neural network written using TensorFlow 2 & Keras; it requires TensorFlow 2.0.0 or 2.1.0 library and also NumPy and MatPlotLib libraries.<br/>
 
+Please visit [here](https://computationalmindset.com/en/neural-networks/two-variables-real-function-fitting-with-tensorflow.html) for concepts about this project.
+
 It contains four python programs:
  - **fxy_gen.py** generates a synthetic dataset file invoking a two-variables real-valued function constrained in a rectangle.
  - **fxy_fit.py** fits a two-variables real-valued function constrained in a rectangle using a configurable multilayer perceptron.
