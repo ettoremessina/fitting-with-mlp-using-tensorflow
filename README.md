@@ -2,7 +2,7 @@
 Goal of this repository is to share programs that fit some kinds of curves by high configurable multilayer perceptron (MLP) neural network written in Python 3 using TensorFlow 2 with Keras.
 
 ## One-variable real-valued function fitting
-The project [One-variable real-valued function fitting](./one-variable-function-fitting) implements the fitting of a continuous and limited real-valued function defined in a closed interval of the reals.<br />
+The project [One-variable real-valued function fitting](./one-variable-real-function-fitting) implements the fitting of a continuous and limited real-valued function defined in a closed interval of the reals.<br />
 Please visit [here](https://computationalmindset.com/en/neural-networks/one-variable-function-fitting-with-tensorflow.html) for concepts about this project.
 
 ## Parametric curve on plane fitting
