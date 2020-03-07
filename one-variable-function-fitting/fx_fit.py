@@ -1,10 +1,13 @@
 import argparse
 import csv
 import time
+import os
 import numpy as np
 import tensorflow.keras.optimizers as tko
 import tensorflow.keras.activations as tka
 import tensorflow.keras.losses as tkl
+import tensorflow.keras.metrics as tkm
+import tensorflow.keras.callbacks as tfcb
 from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras.models import Model
 
@@ -33,6 +36,16 @@ def build_loss():
     exp_loss = 'lambda _ : tkl.' + args.loss
     return eval(exp_loss)(None)
 
+def read_dataset(dsfilename):
+    x_values = []
+    y_values = []
+    with open(dsfilename) as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        for row in csv_reader:
+            x_values.append(float(row[0]))
+            y_values.append(float(row[1]))
+    return x_values, y_values
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='fx_fit.py fits a one-variable function in an interval using a configurable multilayer perceptron network')
 
@@ -41,6 +54,12 @@ if __name__ == "__main__":
                         dest='train_dataset_filename',
                         required=True,
                         help='train dataset file (csv format)')
+
+    parser.add_argument('--valds',
+                        type=str,
+                        dest='val_dataset_filename',
+                        required=False,
+                        help='validation dataset file (csv format)')
 
     parser.add_argument('--modelout',
                         type=str,
@@ -92,6 +111,26 @@ if __name__ == "__main__":
                         default='MeanSquaredError()',
                         help='loss function name')
 
+    parser.add_argument('--metrics',
+                        type=str,
+                        nargs = '+',
+                        dest='metrics',
+                        required=False,
+                        default=[],
+                        help='metrics')
+
+    parser.add_argument('--dumpout',
+                        type=str,
+                        dest='dumpout_path',
+                        required=False,
+                        help='dump directory (directory to store loss and metric values)')
+
+    parser.add_argument('--logsout',
+                        type=str,
+                        dest='logsout_path',
+                        required=False,
+                        help='logs directory for TensorBoard')
+
     args = parser.parse_args()
 
     if len(args.hidden_layers_layout) != len(args.activation_functions):
@@ -99,25 +138,42 @@ if __name__ == "__main__":
 
     print("#### Started {} {} ####".format(__file__, args));
 
-    x_train = []
-    y_train = []
-    with open(args.train_dataset_filename) as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',')
-        for row in csv_reader:
-            x_train.append(float(row[0]))
-            y_train.append(float(row[1]))
+    x_train, y_train = read_dataset(args.train_dataset_filename)
+
+    validation_data = None
+    if args.val_dataset_filename is not None:
+        validation_data = read_dataset(args.val_dataset_filename)
 
     model = build_model()
 
     optimizer = build_optimizer()
-    model.compile(loss=build_loss(), optimizer=optimizer)
+    loss=build_loss()
+    model.compile(loss=loss, optimizer=optimizer, metrics = args.metrics)
     model.summary()
 
+    tf_callbacks = []
+    if args.logsout_path is not None:
+        tf_callbacks.append(tfcb.TensorBoard(log_dir=args.logsout_path, histogram_freq=0, write_graph=True, write_images=True))
+
     start_time = time.time()
-    model.fit(x_train, y_train, epochs=args.epochs, batch_size=args.batch_size, verbose=1)
+    history = model.fit(
+        x_train, y_train,
+        epochs=args.epochs,
+        batch_size=args.batch_size,
+        verbose=1,
+        validation_data=validation_data,
+        callbacks=tf_callbacks)
     elapsed_time = time.time() - start_time
     print ("Training time:", time.strftime("%H:%M:%S", time.gmtime(elapsed_time)))
 
     model.save(args.model_path)
+    if args.dumpout_path is not None:
+        if not os.path.exists(args.dumpout_path):
+            os.makedirs(args.dumpout_path)
+        np.savetxt(os.path.join(args.dumpout_path, 'loss_' + loss.name + '.csv'), history.history['loss'], delimiter=',')
+        for metric in args.metrics:
+            np.savetxt(os.path.join(args.dumpout_path, 'metric_' + metric + '.csv'), history.history[metric], delimiter=',')
+            if validation_data is not None:
+                np.savetxt(os.path.join(args.dumpout_path, 'val_' + metric + '.csv'), history.history['val_' + metric], delimiter=',')
 
     print("#### Terminated {} ####".format(__file__));
