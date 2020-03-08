@@ -7,7 +7,7 @@ import imageio
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='fx_predict.py makes prediction of the values of a one-variable function modeled with a pretrained multilayer perceptron network')
+    parser = argparse.ArgumentParser(description='fx_video.py generates an animated git that shows the prediction curve computed on an input dataset as the epochs change.')
 
     parser.add_argument('--modelsnap',
                         type=str,
@@ -19,14 +19,14 @@ if __name__ == "__main__":
                         type=str,
                         dest='dataset_filename',
                         required=True,
-                        help='dataset file (csv format); only x-values are used')
+                        help='dataset file (csv format)')
 
     parser.add_argument('--savevideo',
                         type=str,
                         dest='save_gif_video',
                         required=True,
                         default='',
-                        help='The animated .gif file to generate')
+                        help='the animated .gif file name to generate')
 
     parser.add_argument('--fps',
                         type=int,
