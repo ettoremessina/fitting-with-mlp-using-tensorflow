@@ -3,11 +3,13 @@ import csv
 import time
 import os
 import numpy as np
+import tensorflow as tf
 import tensorflow.keras.optimizers as tko
 import tensorflow.keras.activations as tka
 import tensorflow.keras.losses as tkl
 import tensorflow.keras.metrics as tkm
 import tensorflow.keras.callbacks as tfcb
+import tensorflow.keras.initializers as tfi
 from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras.models import Model
 
@@ -15,7 +17,10 @@ def build_model():
     inputs = Input(shape=(1,))
     hidden = inputs
     for i in range(0, len(args.hidden_layers_layout)):
-        hidden = Dense(args.hidden_layers_layout[i], activation=build_activation_function(args.activation_functions[i]))(hidden)
+        hidden = Dense(
+            args.hidden_layers_layout[i],
+            activation=build_activation_function(args.activation_functions[i])
+            )(hidden)
     outputs = Dense(1)(hidden)
     model = Model(inputs=inputs, outputs=outputs)
     return model
@@ -45,6 +50,12 @@ def read_dataset(dsfilename):
             x_values.append(float(row[0]))
             y_values.append(float(row[1]))
     return x_values, y_values
+
+class EpochLogger(tfcb.Callback):
+    def on_epoch_end(self, epoch, logs=None):
+        if  (epoch % args.model_snapshots_freq == 0) or ((epoch + 1) == args.epochs):
+            self.model.save(os.path.join(args.model_snapshots_path, format(epoch, '09')))
+            print ('\nSaved #{} snapshot model'.format(epoch, '09'))
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='fx_fit.py fits a one-variable function in an interval using a configurable multilayer perceptron network')
@@ -131,6 +142,19 @@ if __name__ == "__main__":
                         required=False,
                         help='logs directory for TensorBoard')
 
+    parser.add_argument('--modelsnapout',
+                        type=str,
+                        dest='model_snapshots_path',
+                        required=False,
+                        help='output model snapshots directory')
+
+    parser.add_argument('--modelsnapfreq',
+                        type=int,
+                        dest='model_snapshots_freq',
+                        required=False,
+                        default=25,
+                        help='frequency in epochs to make the snapshot of model')
+
     args = parser.parse_args()
 
     if len(args.hidden_layers_layout) != len(args.activation_functions):
@@ -152,8 +176,10 @@ if __name__ == "__main__":
     model.summary()
 
     tf_callbacks = []
-    if args.logsout_path is not None:
+    if args.logsout_path:
         tf_callbacks.append(tfcb.TensorBoard(log_dir=args.logsout_path, histogram_freq=0, write_graph=True, write_images=True))
+    if args.model_snapshots_path:
+        tf_callbacks.append(EpochLogger())
 
     start_time = time.time()
     history = model.fit(
@@ -167,6 +193,8 @@ if __name__ == "__main__":
     print ("Training time:", time.strftime("%H:%M:%S", time.gmtime(elapsed_time)))
 
     model.save(args.model_path)
+    print ('\nSaved final model')
+
     if args.dumpout_path is not None:
         if not os.path.exists(args.dumpout_path):
             os.makedirs(args.dumpout_path)
