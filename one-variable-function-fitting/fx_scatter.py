@@ -3,7 +3,7 @@ import csv
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='fx_plot.py shows two overlapped x/y scatter graphs: the blue one is the dataset, the red one is the prediction')
+    parser = argparse.ArgumentParser(description='fx_scatter.py shows two overlapped x/y scatter graphs: the blue one is the dataset, the red one is the prediction')
 
     parser.add_argument('--ds',
                         type=str,
@@ -16,6 +16,13 @@ if __name__ == "__main__":
                         dest='prediction_data_filename',
                         required=True,
                         help='prediction data file (csv format)')
+
+    parser.add_argument('--title',
+                        type=str,
+                        dest='figure_title',
+                        required=False,
+                        default='prediction in red',
+                        help='if present, it set the title of chart')
 
     parser.add_argument('--savefig',
                         type=str,
@@ -30,14 +37,17 @@ if __name__ == "__main__":
 
     with open(args.dataset_filename) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
+        next(csv_reader, None)
         for row in csv_reader:
             plt.scatter(float(row[0]), float(row[1]), color='blue', s=1, marker='.')
 
     with open(args.prediction_data_filename) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
+        next(csv_reader, None)
         for row in csv_reader:
             plt.scatter(float(row[0]), float(row[1]), color='red', s=2, marker='.')
 
+    plt.title(args.figure_title);
     if args.save_figure_filename:
         plt.savefig(args.save_figure_filename)
     else:

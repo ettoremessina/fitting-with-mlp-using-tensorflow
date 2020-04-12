@@ -17,13 +17,22 @@ def build_model():
     inputs = Input(shape=(1,))
     hidden = inputs
     for i in range(0, len(args.hidden_layers_layout)):
+        kernel_initializer = build_initializer(args.weight_initializers[i]) if i < len(args.weight_initializers) else None
+        bias_initializer = build_initializer(args.bias_initializers[i]) if i < len(args.bias_initializers) else None
         hidden = Dense(
             args.hidden_layers_layout[i],
-            activation=build_activation_function(args.activation_functions[i])
+            use_bias = True,
+            activation = build_activation_function(args.activation_functions[i]),
+            kernel_initializer = kernel_initializer,
+            bias_initializer = bias_initializer
             )(hidden)
     outputs = Dense(1)(hidden)
     model = Model(inputs=inputs, outputs=outputs)
     return model
+
+def build_initializer(init):
+    exp_init = 'lambda _ : tfi.' + init
+    return eval(exp_init)(None)
 
 def build_activation_function(af):
     if af.lower() == 'none':
@@ -46,6 +55,7 @@ def read_dataset(dsfilename):
     y_values = []
     with open(dsfilename) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
+        next(csv_reader, None)
         for row in csv_reader:
             x_values.append(float(row[0]))
             y_values.append(float(row[1]))
@@ -58,7 +68,7 @@ class EpochLogger(tfcb.Callback):
             print ('\nSaved #{} snapshot model'.format(epoch, '09'))
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='fx_fit.py fits a one-variable function in an interval using a configurable multilayer perceptron network')
+    parser = argparse.ArgumentParser(description='fx_fit.py fits a one-variable function in an interval using a configurable multilayer perceptron neural network')
 
     parser.add_argument('--trainds',
                         type=str,
@@ -66,17 +76,23 @@ if __name__ == "__main__":
                         required=True,
                         help='train dataset file (csv format)')
 
+    parser.add_argument('--modelout',
+                        type=str,
+                        dest='model_path',
+                        required=True,
+                        help='output model directory')
+
     parser.add_argument('--valds',
                         type=str,
                         dest='val_dataset_filename',
                         required=False,
                         help='validation dataset file (csv format)')
 
-    parser.add_argument('--modelout',
+    parser.add_argument('--bestmodelmonitor',
                         type=str,
-                        dest='model_path',
-                        required=True,
-                        help='output model directory')
+                        dest='best_model_monitor',
+                        required=False,
+                        help='quantity to monitor in order to save the best model')
 
     parser.add_argument('--epochs',
                         type=int,
@@ -108,6 +124,22 @@ if __name__ == "__main__":
                         default=['relu'],
                         help='activation functions between layers')
 
+    parser.add_argument('--winitializers',
+                        type=str,
+                        nargs = '+',
+                        dest='weight_initializers',
+                        required=False,
+                        default=[],
+                        help='list of initializers (one for each layer) of the weights')
+
+    parser.add_argument('--binitializers',
+                        type=str,
+                        nargs = '+',
+                        dest='bias_initializers',
+                        required=False,
+                        default=[],
+                        help='list of initializers (one for each layer) of the bias')
+
     parser.add_argument('--optimizer',
                         type=str,
                         dest='optimizer',
@@ -128,7 +160,7 @@ if __name__ == "__main__":
                         dest='metrics',
                         required=False,
                         default=[],
-                        help='metrics')
+                        help='list of metrics to compute')
 
     parser.add_argument('--dumpout',
                         type=str,
@@ -180,6 +212,13 @@ if __name__ == "__main__":
         tf_callbacks.append(tfcb.TensorBoard(log_dir=args.logsout_path, histogram_freq=0, write_graph=True, write_images=True))
     if args.model_snapshots_path:
         tf_callbacks.append(EpochLogger())
+    if args.best_model_monitor:
+        tf_callbacks.append(tfcb.ModelCheckpoint(
+            filepath = args.model_path,
+            save_best_only = True,
+            monitor = args.best_model_monitor,
+            mode = 'auto',
+            verbose=1))
 
     start_time = time.time()
     history = model.fit(
@@ -192,8 +231,9 @@ if __name__ == "__main__":
     elapsed_time = time.time() - start_time
     print ("Training time:", time.strftime("%H:%M:%S", time.gmtime(elapsed_time)))
 
-    model.save(args.model_path)
-    print ('\nSaved final model')
+    if not args.best_model_monitor:
+        model.save(args.model_path)
+        print ('\nSaved last recent model')
 
     if args.dumpout_path is not None:
         if not os.path.exists(args.dumpout_path):

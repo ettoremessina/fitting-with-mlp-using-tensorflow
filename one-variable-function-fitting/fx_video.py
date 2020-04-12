@@ -57,6 +57,7 @@ if __name__ == "__main__":
     y_values = []
     with open(args.dataset_filename) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
+        next(csv_reader, None)
         for row in csv_reader:
             x_values.append(float(row[0]))
             y_values.append(float(row[1]))

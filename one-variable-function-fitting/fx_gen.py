@@ -47,6 +47,7 @@ if __name__ == "__main__":
     csv_ds_output_file = open(args.ds_output_filename, 'w')
     with csv_ds_output_file:
         writer = csv.writer(csv_ds_output_file, delimiter=',')
+        writer.writerow(['x', 'y'])
         for i in range(0, x_values.size):
             writer.writerow([x_values[i], func_x(x_values[i])])
 

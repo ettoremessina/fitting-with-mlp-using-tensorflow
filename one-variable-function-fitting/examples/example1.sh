@@ -27,9 +27,9 @@ python ../fx_fit.py \
 python ../fx_gen.py --dsout datasets/example1_test.csv  --fx "$FX" --rbegin $RB --rend $RE --rstep 0.0475
 python ../fx_predict.py --model models/example1 --ds datasets/example1_test.csv --prediction predictions/example1_pred.csv
 
-python ../fx_plot.py --ds datasets/example1_test.csv --prediction predictions/example1_pred.csv
-#python ../fx_plot.py --ds datasets/example1_test.csv --prediction predictions/example1_pred.csv --savefig predictions/example1.png
+python ../fx_scatter.py --ds datasets/example1_test.csv --prediction predictions/example1_pred.csv
+#python ../fx_scatter.py --ds datasets/example1_test.csv --prediction predictions/example1_pred.csv --savefig media/example1.png
 
 #python ../fx_diag.py --dump dumps/example1
 
-python ../fx_video.py --modelsnap snaps/example1 --ds datasets/example1_test.csv --savevideo predictions/example1_test.gif
+python ../fx_video.py --modelsnap snaps/example1 --ds datasets/example1_test.csv --savevideo media/example1_test.gif

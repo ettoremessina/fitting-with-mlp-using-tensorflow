@@ -31,6 +31,7 @@ if __name__ == "__main__":
     x_values = []
     with open(args.dataset_filename) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
+        next(csv_reader, None)
         for row in csv_reader:
             x_values.append(float(row[0]))
 
@@ -43,6 +44,7 @@ if __name__ == "__main__":
     csv_output_file = open(args.prediction_data_filename, 'w')
     with csv_output_file:
         writer = csv.writer(csv_output_file, delimiter=',')
+        writer.writerow(['x', 'y'])
         for i in range(0, len(x_values)):
             writer.writerow([x_values[i], y_pred[i][0]])
 

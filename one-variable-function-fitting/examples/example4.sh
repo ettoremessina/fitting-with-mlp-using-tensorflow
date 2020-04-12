@@ -15,4 +15,4 @@ python ../fx_fit.py \
 python ../fx_gen.py --dsout datasets/example4_test.csv  --fx "$FX" --rbegin $RB --rend $RE --rstep 0.0475
 python ../fx_predict.py --model models/example4 --ds datasets/example4_test.csv --predictionout predictions/example4_pred.csv
 
-python ../fx_plot.py --ds datasets/example4_test.csv --prediction predictions/example4_pred.csv
+python ../fx_scatter.py --ds datasets/example4_test.csv --prediction predictions/example4_pred.csv

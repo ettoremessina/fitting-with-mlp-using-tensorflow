@@ -8,7 +8,7 @@ It contains six python programs:
  - **fx_gen.py** generates a synthetic dataset file invoking a one-variable real-valued function on an real interval.
  - **fx_fit.py** fits a one-variable real-valued function in an interval using a configurable multilayer perceptron.
  - **fx_predict.py** makes a prediction of a one-variable real-valued function modeled with a pretrained multilayer perceptron.
- - **fx_plot.py** generates two overlapped x/y scatter graphs: the blue one is the input dataset, the red one is the prediction.
+ - **fx_scatter.py** generates two overlapped x/y scatter graphs: the blue one is the input dataset, the red one is the prediction.
  - **fx_diag.py** generates a set of graphs to show the curves of loss function and the curves of metrics (in they are available both on training and validation datasets.
  - **fx_video.py** generates an animated gif that shows the prediction curve computed on an input dataset as the epochs change.
 
@@ -84,12 +84,16 @@ usage: fx_fit.py [-h]
                  --trainds TRAIN_DATASET_FILENAME
                  --modelout MODEL_PATH
                  [--valds VAL_DATASET_FILENAME]
-                 [--epochs EPOCHS] [--batch_size BATCH_SIZE]
+                 [--bestmodelmonitor BEST_MODEL_MONITOR]
+                 [--epochs EPOCHS]
+                 [--batch_size BATCH_SIZE]
                  [--hlayers HIDDEN_LAYERS_LAYOUT [HIDDEN_LAYERS_LAYOUT ...]]
                  [--hactivations ACTIVATION_FUNCTIONS [ACTIVATION_FUNCTIONS ...]]
+                 [--winitializers KERNEL_INITIALIZERS [KERNEL_INITIALIZERS ...]]
+                 [--binitializers BIAS_INITIALIZERS [BIAS_INITIALIZERS ...]]
                  [--optimizer OPTIMIZER]
                  [--loss LOSS]
-                 [--metrics METRICS [METRICS ...]]
+                 [--metrics METRICS [METRICS ...]]                 
                  [--dumpout DUMPOUT_PATH]
                  [--logsout LOGSOUT_PATH]
                  [--modelsnapout MODEL_SNAPSHOTS_PATH]
@@ -98,27 +102,31 @@ usage: fx_fit.py [-h]
 fx_fit.py fits a one-variable real-valued function dataset using a configurable multilayer perceptron network
 
 optional arguments:
-  -h, --help                        show this help message and exit
-  --trainds TRAIN_DATASET_FILENAME  train dataset file (csv format)
-  --valds VAL_DATASET_FILENAME      validation dataset file (csv format)
-  --modelout MODEL_PATH             output model directory
-  --epochs EPOCHS                   number of epochs
-  --batch_size BATCH_SIZE           batch size
+  -h, --help                            show this help message and exit
+  --trainds TRAIN_DATASET_FILENAME      train dataset file (csv format)
+  --valds VAL_DATASET_FILENAME          validation dataset file (csv format)
+  --bestmodelmonitor BEST_MODEL_MONITOR quantity to monitor in order to save the best model
+  --modelout MODEL_PATH                 output model directory
+  --epochs EPOCHS                       number of epochs
+  --batch_size BATCH_SIZE               batch size
   --hlayers HIDDEN_LAYERS_LAYOUT [HIDDEN_LAYERS_LAYOUT ...] number of neurons for each hidden layer
   --hactivations ACTIVATION_FUNCTIONS [ACTIVATION_FUNCTIONS ...] activation functions between layer
-  --optimizer OPTIMIZER             optimizer algorithm
-  --loss LOSS                       loss function
-  --metrics METRICS [METRICS ...]   metrics
-  --dumpout DUMPOUT_PATH           dump directory (directory to store loss and metric values)
-  --logsout LOGSOUT_PATH           logs directory for TensorBoard
-  --modelsnapout MODEL_SNAPSHOTS_PATH  output model snapshots directory
-  --modelsnapfreq MODEL_SNAPSHOTS_FREQ frequency in epochs to make the snapshot of model  
+  --winitializers WEIGHT_INITIALIZERS [WEIGHT_INITIALIZERS ...]] list of initializers (one for each layer) of the weights
+  --binitializers BIAS_INITIALIZERS [BIAS_INITIALIZERS ...]]     list of initializers (one for each layer) of the bias
+  --optimizer OPTIMIZER                 optimizer algorithm
+  --loss LOSS                           loss function
+  --metrics METRICS [METRICS ...]       list of metrics to compute
+  --dumpout DUMPOUT_PATH                dump directory (directory to store loss and metric values)
+  --logsout LOGSOUT_PATH                logs directory for TensorBoard
+  --modelsnapout MODEL_SNAPSHOTS_PATH   output model snapshots directory
+  --modelsnapfreq MODEL_SNAPSHOTS_FREQ  frequency in epochs to make the snapshot of model  
 ```
 
 Namely:
 - **-h or --help** shows the above usage
 - **--trainds** is the input training dataset in csv format: a pair of real numbers for each line respectively for x and y (no header at first line). In case you haven't a such real world true dataset, for your experiments you can generate it synthetically using **fx_gen.py**. This argument is mandatory.
 - **--valds** is the input validation dataset in csv format (same structure than train dataset) that is used by the program to compute loss function and metrics over it. This argument is optional; if it is not specified, program will not compute loss and metric on any validation dataset, but only on training dataset.
+- **--bestmodelmonitor** is the name of the quantity to monitor in order to save the best model; when present the saved model is not the most recent one (namely the model at last epoch time), but the one that is better in according with quantity to monitor. Pay attention: if you specify a quantity that is not available, no model is saved; then if name of quantity to monitor starts for 'val_', the quantity is computed on validation dataset (that must be passed via **--valds**), otherwise quantity is computed on training dataset. Then quantity name 'loss' is always available because of a loss quantity is always present; 'val_loss' is present is valudation dataset is present; any other value requires it is present also in **--metrics** argument.
 - **--modelout** is a non-existing directory where the program saves the trained model (in tf native format). This argument is mandatory.
 - **--epochs** is the number of epochs of the training process. The default is **500**
 - **--batch_size** is the size of the batch used during training. The default is **50**
@@ -137,6 +145,21 @@ Namely:
   - softsign
   - tanh\
   The default is **relu** (applied to one only hidden layer; if number of layers is > 1, this argument becomes mandatory).
+- **--winitializers** is a list of initializator constructor for the kernel weights matrix: the length of the list of this argument should be equal to the number of layers; if extra initializators are supplied they are ignored; if less initializers are suppliers the last layers will have the default initializer, that is GlorotUniform(); please see [TensorFlow 2 initializer reference](https://www.tensorflow.org/api_docs/python/tf/keras/initializers) for details and examples at the end of this section.\
+    Available activation functions are:
+    - Constant()
+    - GlorotNormal()
+    - GlorotUniform()
+    - Identity()
+    - Ones()
+    - Orthogonal()
+    - RandomNormal()
+    - RandomUniform()
+    - TruncatedNormal
+    - VarianceScaling
+    - Zeros()\
+    This argument is optional; if it is missing, all layers have the default kernel weighst matrix initializer for Dense nodes (that is GlorotUniform()).
+- **--binitializers** is a list of initializator constructor for the bias; same rules for **--winitializers** are applied for **--binitializers**, except the default initializier that is Zeros() when less initializers than hidden layers are supplier. This argument is optional; if it is missing, all layers have the default bian initializer for Dense nodes (that is Zeros()).
 - **--optimizer** is the constructor call of the algorithm used by the training process. You can pass also named arguments between round brackets; please see [TensorFlow 2 optimizer reference](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers) for details about constructor named parameters and examples at the end of this section.\
   Available algorithm constructors are:
   - Adadelta()
@@ -250,38 +273,41 @@ $ python fx_predict.py --model mymodel --ds mytestds.csv --predictionout mypredi
 ```
 
 
-## fx_plot.py<a name="fx_plot"/>
-To get the usage of [fx_plot.py](./fx_plot.py) please run
+## fx_scatter.py<a name="fx_scatter"/>
+To get the usage of [fx_scatter.py](./fx_scatter.py) please run
 ```bash
-$ python fx_plot.py --help
+$ python fx_scatter.py --help
 ```
 
 and you get:
 ```
-usage: fx_plot.py [-h]
+usage: fx_scatter.py [-h]
                   --ds DATASET_FILENAME
                   --prediction PREDICTION_DATA_FILENAME
+                  [--title FIGURE_TITLE  if present, it set the title of chart]
                   [--savefig SAVE_FIGURE_FILENAME]
 
-fx_plot.py shows two overlapped x/y scatter graphs: the blue one is the dataset, the red one is the prediction one
+fx_scatter.py shows two overlapped x/y scatter graphs: the blue one is the dataset, the red one is the prediction one
 
 optional arguments:
   -h, --help            show this help message and exit
   --ds DATASET_FILENAME dataset file (csv format)
   --prediction PREDICTION_DATA_FILENAME  prediction data file (csv format)
-  --savefig SAVE_FIGURE_FILENAME       if present, the chart is saved on a file instead to be shown on screen
+  --title FIGURE_TITLE                   if present, it sets the title of the chart
+  --savefig SAVE_FIGURE_FILENAME         if present, the chart is saved on a file instead to be shown on screen
 ```
 Namely:
 - **-h or --help** shows the above usage
 - **--ds** is an input dataset in csv format (no header at first line). Usually this parameter is the test dataset file passed to **fx_predict.py**, but you could pass the training dataset passed to **fx_fit.py**. This argument is mandatory.
 - **--prediction** is the file name of prediction values generated by **fx_predict.py** (see **--predictionout** command line parameter of **fx_predict.py**). This argument is mandatory.
-- **--savefig** if this argument is missing, the chart is shown on screen, otherwise this argument is the png output filename where **fx_plot.py** saves the chart.
+- **--title** if this argument is missing, the chart has a default title, otherwise this argument sets the title of the chart.
+- **--savefig** if this argument is missing, the chart is shown on screen, otherwise this argument is the png output filename where **fx_scatter.py** saves the chart.
 
-### Examples of fx_plot.py usage
+### Examples of fx_scatter.py usage
 ```bash
-$ python fx_plot.py --ds mytestds.csv --prediction myprediction.csv
+$ python fx_scatter.py --ds mytestds.csv --prediction myprediction.csv
 
-$ python fx_plot.py --ds mytrainds.csv --prediction myprediction.csv --savefig mychart.png
+$ python fx_scatter.py --ds mytrainds.csv --prediction myprediction.csv --tile "My Title" --savefig mychart.png
 ```
 
 
