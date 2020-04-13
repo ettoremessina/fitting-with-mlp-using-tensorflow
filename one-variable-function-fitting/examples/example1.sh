@@ -18,7 +18,7 @@ python ../fx_fit.py \
   --epochs 100 --batch_size 50 \
   --optimizer 'Adam(learning_rate=1e-2, epsilon=1e-07)' \
   --loss 'MeanSquaredError()' \
-  --metrics 'mean_absolute_error' 'mean_absolute_error' 'mean_squared_logarithmic_error' 'cosine_similarity' \
+  --metrics 'mean_absolute_error' 'mean_squared_logarithmic_error' 'cosine_similarity' \
   --dumpout dumps/example1 \
   --logsout logs/example1 \
   --modelsnapout snaps/example1 \

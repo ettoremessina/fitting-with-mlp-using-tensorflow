@@ -12,6 +12,8 @@ def plot_graph(data_filename, colorname):
     plt.plot(data_values, color=colorname)
 
     if args.save_figure_directory:
+        if not os.path.exists(args.save_figure_directory):
+            os.makedirs(args.save_figure_directory)
         plt.savefig(os.path.join(args.save_figure_directory, y_name) + '.png')
     else:
         plt.show()
