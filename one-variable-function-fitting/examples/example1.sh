@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 rm -rf dumps/example1
 rm -rf logs/example1
 rm -rf snaps/example1

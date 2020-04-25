@@ -26,7 +26,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    print("#### Started {} {} ####".format(__file__, args));
+    #print("#### Started {} {} ####".format(__file__, args));
+    print("#### Started fx_predict ####");
 
     x_values = []
     with open(args.dataset_filename) as csv_file:
@@ -48,4 +49,5 @@ if __name__ == "__main__":
         for i in range(0, len(x_values)):
             writer.writerow([x_values[i], y_pred[i][0]])
 
-    print("#### Terminated {} ####".format(__file__));
+    #print("#### Terminated {} ####".format(__file__));
+    print("#### Terminated fx_predict ####");

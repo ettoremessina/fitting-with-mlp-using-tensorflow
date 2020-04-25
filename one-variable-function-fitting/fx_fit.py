@@ -192,7 +192,10 @@ if __name__ == "__main__":
     if len(args.hidden_layers_layout) != len(args.activation_functions):
         raise Exception('Number of hidden layers and number of activation functions must be equals')
 
-    print("#### Started {} {} ####".format(__file__, args));
+    tf.get_logger().setLevel('INFO')
+
+    #print("#### Started {} {} ####".format(__file__, args));
+    print("#### Started fx_fit ####");
 
     x_train, y_train = read_dataset(args.train_dataset_filename)
 
@@ -244,4 +247,5 @@ if __name__ == "__main__":
             if validation_data is not None:
                 np.savetxt(os.path.join(args.dumpout_path, 'val_' + metric + '.csv'), history.history['val_' + metric], delimiter=',')
 
-    print("#### Terminated {} ####".format(__file__));
+    #print("#### Terminated {} ####".format(__file__));
+    print("#### Terminated fx_fit ####");

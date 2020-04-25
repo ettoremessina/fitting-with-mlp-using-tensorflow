@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 FX="np.exp(np.sin(x))"
 RB=-5.0

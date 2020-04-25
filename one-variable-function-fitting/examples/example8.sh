@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 FX="np.tanh(x)"
 RB=-5.0

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 FX="np.sin(2 * x) / np.exp(x / 5.0)"
 RB=-20.0

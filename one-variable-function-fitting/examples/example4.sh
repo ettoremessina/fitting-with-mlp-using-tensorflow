@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 FX="np.sqrt(np.abs(x))"
 RB=-5.0

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 rm -rf dumps/example2_best
 rm -rf dumps/example2_recent

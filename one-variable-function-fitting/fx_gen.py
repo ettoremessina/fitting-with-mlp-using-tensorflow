@@ -40,7 +40,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    print("#### Started {} {} ####".format(__file__, args));
+    #print("#### Started {} {} ####".format(__file__, args));
+    print("#### Started fx_gen ####");
 
     x_values = np.arange(args.range_begin, args.range_end, args.range_step, dtype=float)
     func_x = eval('lambda x: ' + args.func_x_body)
@@ -51,4 +52,5 @@ if __name__ == "__main__":
         for i in range(0, x_values.size):
             writer.writerow([x_values[i], func_x(x_values[i])])
 
-    print("#### Terminated {} ####".format(__file__));
+    #print("#### Terminated {} ####".format(__file__));
+    print("#### Terminated fx_gen ####");

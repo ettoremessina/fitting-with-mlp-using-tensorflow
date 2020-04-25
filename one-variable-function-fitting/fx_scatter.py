@@ -24,6 +24,20 @@ if __name__ == "__main__":
                         default='prediction in red',
                         help='if present, it set the title of chart')
 
+    parser.add_argument('--width',
+                        type=float,
+                        dest='width',
+                        required=False,
+                        default=19.20,
+                        help='width of animated git (in inch)')
+
+    parser.add_argument('--height',
+                        type=float,
+                        dest='height',
+                        required=False,
+                        default=10.80,
+                        help='height of animated git (in inch)')
+
     parser.add_argument('--savefig',
                         type=str,
                         dest='save_figure_filename',
@@ -33,7 +47,10 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    print("#### Started {} {} ####".format(__file__, args));
+    #print("#### Started {} {} ####".format(__file__, args));
+    print("#### Started fx_scatter ####");
+
+    fig, ax = plt.subplots(figsize=(args.width, args.height))
 
     with open(args.dataset_filename) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
@@ -53,4 +70,5 @@ if __name__ == "__main__":
     else:
         plt.show()
 
-    print("#### Terminated {} ####".format(__file__));
+    #print("#### Terminated {} ####".format(__file__));
+    print("#### Terminated fx_scatter ####");

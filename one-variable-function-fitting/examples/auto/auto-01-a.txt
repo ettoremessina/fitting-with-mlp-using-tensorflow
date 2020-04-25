@@ -1,0 +1,42 @@
+#!/usr/bin/expect
+log_user 0
+spawn clear
+interact
+sleep 5
+
+spawn bash pcbc.sh "$ mkdir -p myexperiments"
+sleep 1
+interact
+spawn mkdir -p myexperiments 
+interact
+
+spawn bash pcbc.sh "$ python fx_gen.py --dsout myexperiments/mytrain.csv --fx \"np.sin(x)\" --rbegin -6.28 --rend 6.28 --rstep 0.01 " 
+interact
+sleep 1
+spawn python ../../fx_gen.py --dsout myexperiments/mytrain.csv --fx "np.sin(x)" --rbegin -6.28 --rend 6.28 --rstep 0.01 
+interact
+
+spawn bash pcbc.sh "$ python fx_gen.py --dsout myexperiments/mytest.csv --fx \"np.sin(x)\" --rbegin -6.28 --rend 6.28 --rstep 0.0475 " 
+interact
+sleep 1
+spawn python ../../fx_gen.py --dsout myexperiments/mytest.csv --fx "np.sin(x)" --rbegin -6.28 --rend 6.28 --rstep 0.0475 
+interact
+
+spawn bash pcbc.sh "$ python fx_fit.py --trainds myexperiments/mytrain.csv --modelout myexperiments/mymodel --epochs 10 --batch_size 50 --hlayer 5 5 --hactivations relu relu --optimizer \"Adam(learning_rate=0.05)\"" 
+interact
+sleep 1
+spawn bash -c "python ../../fx_fit.py --trainds myexperiments/mytrain.csv --modelout myexperiments/mymodel --epochs 10 --batch_size 50 --hlayer 5 5 --hactivations relu relu --optimizer \"Adam(learning_rate=0.05)\" 2> /dev/null"
+interact 
+
+spawn bash pcbc.sh "$ python fx_predict.py --model myexperiments/mymodel --ds myexperiments/mytest.csv --predictionout myexperiments/myprediction.csv " 
+interact
+sleep 1
+spawn python ../../fx_predict.py --model myexperiments/mymodel --ds myexperiments/mytest.csv --predictionout myexperiments/myprediction.csv 
+interact
+
+spawn bash pcbc.sh "$ python fx_scatter.py --ds myexperiments/mytest.csv --prediction myexperiments/myprediction.csv --title \"y=sin(x)\" --savefig myexperiments/auto-01-a.png"
+interact
+sleep 1
+spawn python ../../fx_scatter.py --ds myexperiments/mytest.csv --prediction myexperiments/myprediction.csv --title "y=sin(x)" --savefig myexperiments/auto-01-a.png 
+interact
+

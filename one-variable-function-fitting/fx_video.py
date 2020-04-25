@@ -28,9 +28,30 @@ if __name__ == "__main__":
                         default='',
                         help='the animated .gif file name to generate')
 
-    parser.add_argument('--fps',
+    parser.add_argument('--xlabel',
+                        type=str,
+                        dest='x_axis_label',
+                        required=False,
+                        default='',
+                        help='label of x axis')
+
+    parser.add_argument('--ylabel',
+                        type=str,
+                        dest='y_axis_label',
+                        required=False,
+                        default='',
+                        help='label of y axis')
+
+    parser.add_argument('--labelfontsize',
                         type=int,
-                        dest='fps',
+                        dest='label_font_size',
+                        required=False,
+                        default=18,
+                        help='label font size')
+
+    parser.add_argument('--frameperseconds',
+                        type=int,
+                        dest='frame_per_seconds',
                         required=False,
                         default=10,
                         help='frame per seconds')
@@ -39,14 +60,14 @@ if __name__ == "__main__":
                         type=float,
                         dest='width',
                         required=False,
-                        default=9.0,
+                        default=19.20,
                         help='width of animated git (in inch)')
 
     parser.add_argument('--height',
                         type=float,
                         dest='height',
                         required=False,
-                        default=6.0,
+                        default=10.80,
                         help='height of animated git (in inch)')
 
     args = parser.parse_args()
@@ -61,17 +82,18 @@ if __name__ == "__main__":
         for row in csv_reader:
             x_values.append(float(row[0]))
             y_values.append(float(row[1]))
+
     minx = min(x_values)
     maxx = max(x_values)
     miny = min(y_values)
     maxy = max(y_values)
-
     minx = minx - 0.1 * (maxx - minx)
     maxx = maxx + 0.1 * (maxx - minx)
     miny = miny - 0.1 * (maxy - miny)
     maxy = maxy + 0.1 * (maxy - miny)
 
     frames = []
+    plt.rcParams.update({'font.size': args.label_font_size})
     fig, ax = plt.subplots(figsize=(args.width, args.height))
 
     epochs = [mdl for mdl in sorted(os.listdir(args.model_snapshots_path))]
@@ -82,9 +104,11 @@ if __name__ == "__main__":
         plt.cla()
         ax.set_xlim(minx, maxx)
         ax.set_ylim(miny, maxy)
-        ax.set_title('Epoch = %d' % int(epoch), fontdict={'size': 10, 'color': 'orange'})
-        plt.scatter(x_values, y_values, color='blue', s=1, marker='.')
-        plt.scatter(x_values, y_pred, color='red', s=1, marker='.')
+        ax.set_title('Epoch = %d' % int(epoch), fontdict={'size': args.label_font_size, 'color': 'orange'})
+        ax.set_xlabel(args.x_axis_label, fontdict={'size': args.label_font_size})
+        ax.set_ylabel(args.y_axis_label, fontdict={'size': args.label_font_size})
+        plt.scatter(x_values, y_values, color='blue', s=2, marker='.')
+        plt.scatter(x_values, y_pred, color='red', s=2, marker='.')
 
         # Used to return the plot as an image array
         # (https://ndres.me/post/matplotlib-animated-gifs-easily/)
@@ -94,7 +118,7 @@ if __name__ == "__main__":
         frames.append(frame)
         print ('Generated frame for epoch {}'.format(epoch))
 
-    imageio.mimsave(args.save_gif_video, frames, fps=args.fps)
+    imageio.mimsave(args.save_gif_video, frames, fps=args.frame_per_seconds)
     print ('Saved {} animated gif'.format(args.save_gif_video))
 
     print("#### Terminated {} ####".format(__file__));
